@@ -8,7 +8,9 @@
 
 <style>
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -20,7 +22,7 @@ body {
 .container {
   width: 94%;
   max-width: 1250px;
-  margin: 38px auto;
+  margin: 35px auto;
 }
 
 /* HEADER */
@@ -29,7 +31,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  gap: 15px;
 }
 
 .header h1 {
@@ -51,6 +54,30 @@ body {
   border-radius: 7px;
   cursor: pointer;
   font-weight: 600;
+}
+
+/* TABS */
+
+.view-tabs {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 4px;
+  cursor: pointer;
+  color: #777;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  color: #222;
+  border-bottom: 2px solid #222;
 }
 
 /* STATS */
@@ -94,7 +121,7 @@ body {
   color: #c65959;
 }
 
-/* FILTER */
+/* FILTERS */
 
 .filters {
   background: white;
@@ -221,7 +248,7 @@ tr:last-child td {
   font-size: 10px;
 }
 
-/* DATES */
+/* DATE */
 
 .date-main {
   display: inline-block;
@@ -287,6 +314,118 @@ tr:last-child td {
   cursor: pointer;
   color: #777;
   font-size: 14px;
+}
+
+/* CALENDAR */
+
+.calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-toolbar button,
+.calendar-toolbar select {
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#calendarMonth {
+  min-width: 150px;
+  text-align: center;
+}
+
+.calendar-wrapper {
+  overflow-x: auto;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  min-width: 840px;
+}
+
+.calendar-days div {
+  background: #2f3d57;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.calendar-cell {
+  min-height: 120px;
+  background: white;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 7px;
+}
+
+.calendar-cell:nth-child(7n+1) {
+  border-left: 1px solid #eee;
+}
+
+.calendar-date {
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 6px;
+}
+
+.calendar-today .calendar-date {
+  background: #e7c95c;
+  color: #222;
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar-task {
+  font-size: 10px;
+  margin-bottom: 4px;
+  padding: 5px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.calendar-task.completed {
+  background: #dceee1;
+  color: #4b7154;
+}
+
+.calendar-task.in-progress {
+  background: #fff0bd;
+  color: #7c621b;
+}
+
+.calendar-task.not-started {
+  background: #efefef;
+  color: #555;
+}
+
+.calendar-empty {
+  background: #fafafa;
+}
+
+.calendar-task-pic {
+  opacity: .75;
+  font-size: 9px;
 }
 
 /* MODAL */
@@ -366,6 +505,8 @@ label {
   border-radius: 8px;
 }
 
+/* MOBILE */
+
 @media(max-width: 750px) {
 
   .stats {
@@ -390,6 +531,7 @@ label {
     width: 100%;
     margin-left: 0;
   }
+
 }
 
 </style>
@@ -413,138 +555,265 @@ label {
   </div>
 
 
-  <!-- STATS -->
+  <div class="view-tabs">
 
-  <div class="stats">
-
-    <div class="stat-card">
-      <div class="stat-number" id="totalTasks">0</div>
-      <div class="stat-label">Total Tasks</div>
-    </div>
-
-    <div class="stat-card stat-completed">
-      <div class="stat-number" id="completedTasks">0</div>
-      <div class="stat-label">Completed</div>
-    </div>
-
-    <div class="stat-card stat-due">
-      <div class="stat-number" id="dueSoonTasks">0</div>
-      <div class="stat-label">Due Within 7 Days</div>
-    </div>
-
-    <div class="stat-card stat-overdue">
-      <div class="stat-number" id="overdueTasks">0</div>
-      <div class="stat-label">Overdue</div>
-    </div>
-
-  </div>
-
-
-  <!-- FILTER -->
-
-  <div class="filters">
-
-    <select id="departmentFilter" onchange="render()">
-      <option value="">All Departments</option>
-    </select>
-
-    <select id="picFilter" onchange="render()">
-      <option value="">All PIC</option>
-    </select>
-
-    <select id="statusFilter" onchange="render()">
-      <option value="">All Status</option>
-      <option value="Not Started">Not Started</option>
-      <option value="In Progress">In Progress</option>
-      <option value="Completed">Completed</option>
-    </select>
-
-    <input
-      type="date"
-      id="fromDate"
-      onchange="render()"
-      title="From date"
+    <button
+      class="tab active"
+      id="tasksTab"
+      onclick="showTasksView()"
     >
-
-    <input
-      type="date"
-      id="toDate"
-      onchange="render()"
-      title="To date"
-    >
-
-    <button class="clear-btn" onclick="clearFilters()">
-      Clear
+      Tasks
     </button>
 
-    <span class="filter-count" id="filterCount"></span>
+    <button
+      class="tab"
+      id="calendarTab"
+      onclick="showCalendarView()"
+    >
+      Calendar
+    </button>
 
   </div>
 
 
-  <div id="tracker">
-    Loading...
+  <!-- TASKS VIEW -->
+
+  <div id="tasksView">
+
+    <div class="stats">
+
+      <div class="stat-card">
+        <div class="stat-number" id="totalTasks">0</div>
+        <div class="stat-label">Total Tasks</div>
+      </div>
+
+      <div class="stat-card stat-completed">
+        <div class="stat-number" id="completedTasks">0</div>
+        <div class="stat-label">Completed</div>
+      </div>
+
+      <div class="stat-card stat-due">
+        <div class="stat-number" id="dueSoonTasks">0</div>
+        <div class="stat-label">Due Within 7 Days</div>
+      </div>
+
+      <div class="stat-card stat-overdue">
+        <div class="stat-number" id="overdueTasks">0</div>
+        <div class="stat-label">Overdue</div>
+      </div>
+
+    </div>
+
+
+    <div class="filters">
+
+      <select id="departmentFilter" onchange="render()">
+        <option value="">All Departments</option>
+      </select>
+
+      <select id="picFilter" onchange="render()">
+        <option value="">All PIC</option>
+      </select>
+
+      <select id="statusFilter" onchange="render()">
+        <option value="">All Status</option>
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+
+      <input
+        type="date"
+        id="fromDate"
+        onchange="render()"
+      >
+
+      <input
+        type="date"
+        id="toDate"
+        onchange="render()"
+      >
+
+      <button
+        class="clear-btn"
+        onclick="clearFilters()"
+      >
+        Clear
+      </button>
+
+      <span
+        class="filter-count"
+        id="filterCount"
+      ></span>
+
+    </div>
+
+
+    <div id="tracker">
+      Loading...
+    </div>
+
+  </div>
+
+
+  <!-- CALENDAR VIEW -->
+
+  <div
+    id="calendarView"
+    style="display:none"
+  >
+
+    <div class="calendar-toolbar">
+
+      <div class="calendar-controls">
+
+        <button onclick="changeMonth(-1)">
+          ‹
+        </button>
+
+        <strong id="calendarMonth">
+        </strong>
+
+        <button onclick="changeMonth(1)">
+          ›
+        </button>
+
+        <button onclick="goToday()">
+          Today
+        </button>
+
+      </div>
+
+
+      <select
+        id="calendarDepartmentFilter"
+        onchange="renderCalendar()"
+      >
+        <option value="">
+          All Departments
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="calendar-wrapper">
+
+      <div class="calendar-grid calendar-days">
+
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+        <div>Sun</div>
+
+      </div>
+
+      <div
+        class="calendar-grid"
+        id="calendarGrid"
+      ></div>
+
+    </div>
+
   </div>
 
 </div>
 
 
-<!-- ADD / EDIT -->
+<!-- ADD / EDIT MODAL -->
 
 <div class="modal" id="modal">
 
-<div class="modal-box">
+  <div class="modal-box">
 
-  <h2 id="modalTitle">Add Task</h2>
+    <h2 id="modalTitle">
+      Add Task
+    </h2>
 
-  <label>Department / Section</label>
-  <input id="department" placeholder="e.g. Writing">
 
-  <label>Task</label>
-  <input id="task" placeholder="Task name">
+    <label>
+      Department / Section
+    </label>
 
-  <label>PIC</label>
-  <input id="pic" placeholder="e.g. Chang Yi, Ashley">
-
-  <label>Date</label>
-  <input type="date" id="due">
-
-  <label>Status</label>
-
-  <select id="status">
-    <option>Not Started</option>
-    <option>In Progress</option>
-    <option>Completed</option>
-  </select>
-
-  <div class="modal-buttons">
-
-    <button
-      class="delete-btn"
-      id="deleteButton"
-      onclick="deleteTask()"
-      style="display:none"
+    <input
+      id="department"
+      placeholder="e.g. Writing"
     >
-      Delete
-    </button>
 
-    <button
-      class="cancel-btn"
-      onclick="closeModal()"
-    >
-      Cancel
-    </button>
 
-    <button
-      class="save-btn"
-      onclick="saveTask()"
+    <label>
+      Task
+    </label>
+
+    <input
+      id="task"
+      placeholder="Task name"
     >
-      Save
-    </button>
+
+
+    <label>
+      PIC
+    </label>
+
+    <input
+      id="pic"
+      placeholder="e.g. Chang Yi, Ashley"
+    >
+
+
+    <label>
+      Date
+    </label>
+
+    <input
+      type="date"
+      id="due"
+    >
+
+
+    <label>
+      Status
+    </label>
+
+    <select id="status">
+      <option>Not Started</option>
+      <option>In Progress</option>
+      <option>Completed</option>
+    </select>
+
+
+    <div class="modal-buttons">
+
+      <button
+        class="delete-btn"
+        id="deleteButton"
+        onclick="deleteTask()"
+        style="display:none"
+      >
+        Delete
+      </button>
+
+      <button
+        class="cancel-btn"
+        onclick="closeModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="save-btn"
+        onclick="saveTask()"
+      >
+        Save
+      </button>
+
+    </div>
 
   </div>
 
-</div>
 </div>
 
 
@@ -554,6 +823,7 @@ import {
   initializeApp
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
 
 import {
   getFirestore,
@@ -567,6 +837,8 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
+
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -594,36 +866,131 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
 
 const tasksCollection =
   collection(db, "tasks");
 
+
 let tasks = [];
 let editingID = null;
+
+let calendarDate =
+  new Date();
 
 
 /* LIVE SYNC */
 
-onSnapshot(tasksCollection, snapshot => {
+onSnapshot(
 
-  tasks = [];
+  tasksCollection,
 
-  snapshot.forEach(item => {
+  snapshot => {
 
-    tasks.push({
-      id: item.id,
-      ...item.data()
+    tasks = [];
+
+    snapshot.forEach(item => {
+
+      tasks.push({
+
+        id: item.id,
+
+        ...item.data()
+
+      });
+
     });
 
-  });
+    updateFilters();
 
-  updateFilters();
-  updateStats();
-  render();
+    updateCalendarDepartmentFilter();
 
-});
+    updateStats();
+
+    render();
+
+    if (
+      document
+      .getElementById("calendarView")
+      .style.display !== "none"
+    ) {
+
+      renderCalendar();
+
+    }
+
+  },
+
+  error => {
+
+    console.error(error);
+
+    document
+    .getElementById("tracker")
+    .innerHTML =
+
+      `<div class="empty">
+      Unable to load tasks.
+      Please check Firestore permissions.
+      </div>`;
+
+  }
+
+);
+
+
+/* VIEW SWITCH */
+
+window.showTasksView =
+function() {
+
+  document
+  .getElementById("tasksView")
+  .style.display = "block";
+
+  document
+  .getElementById("calendarView")
+  .style.display = "none";
+
+  document
+  .getElementById("tasksTab")
+  .classList.add("active");
+
+  document
+  .getElementById("calendarTab")
+  .classList.remove("active");
+
+};
+
+
+window.showCalendarView =
+function() {
+
+  document
+  .getElementById("tasksView")
+  .style.display = "none";
+
+  document
+  .getElementById("calendarView")
+  .style.display = "block";
+
+  document
+  .getElementById("calendarTab")
+  .classList.add("active");
+
+  document
+  .getElementById("tasksTab")
+  .classList.remove("active");
+
+  updateCalendarDepartmentFilter();
+
+  renderCalendar();
+
+};
 
 
 /* STATS */
@@ -634,49 +1001,86 @@ function updateStats() {
   let dueSoon = 0;
   let overdue = 0;
 
-  const today = new Date();
-  today.setHours(0,0,0,0);
+
+  const today =
+    new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
 
   tasks.forEach(item => {
 
-    if (item.status === "Completed") {
+    if (
+      item.status === "Completed"
+    ) {
+
       completed++;
+
       return;
+
     }
 
-    if (!item.due) return;
+
+    if (!item.due)
+      return;
+
 
     const due =
-      new Date(item.due + "T00:00:00");
+      new Date(
+        item.due +
+        "T00:00:00"
+      );
+
 
     const days =
       Math.round(
-        (due - today) /
-        86400000
+        (due - today)
+        / 86400000
       );
 
+
     if (days < 0) {
+
       overdue++;
+
     }
 
-    else if (days <= 7) {
+    else if (
+      days >= 0 &&
+      days <= 7
+    ) {
+
       dueSoon++;
+
     }
 
   });
 
 
-  document.getElementById("totalTasks")
-    .textContent = tasks.length;
+  document
+  .getElementById("totalTasks")
+  .textContent =
+    tasks.length;
 
-  document.getElementById("completedTasks")
-    .textContent = completed;
 
-  document.getElementById("dueSoonTasks")
-    .textContent = dueSoon;
+  document
+  .getElementById("completedTasks")
+  .textContent =
+    completed;
 
-  document.getElementById("overdueTasks")
-    .textContent = overdue;
+
+  document
+  .getElementById("dueSoonTasks")
+  .textContent =
+    dueSoon;
+
+
+  document
+  .getElementById("overdueTasks")
+  .textContent =
+    overdue;
 
 }
 
@@ -686,10 +1090,17 @@ function updateStats() {
 function updateFilters() {
 
   const departmentSelect =
-    document.getElementById("departmentFilter");
+    document
+    .getElementById(
+      "departmentFilter"
+    );
 
   const picSelect =
-    document.getElementById("picFilter");
+    document
+    .getElementById(
+      "picFilter"
+    );
+
 
   const currentDept =
     departmentSelect.value;
@@ -699,270 +1110,572 @@ function updateFilters() {
 
 
   const departments =
+
     [...new Set(
+
       tasks
-      .map(t => t.department)
+      .map(
+        task =>
+        task.department
+      )
       .filter(Boolean)
+
     )].sort();
 
 
-  const pics = new Set();
+  const pics =
+    new Set();
+
 
   tasks.forEach(task => {
 
-    if (!task.pic) return;
+    if (!task.pic)
+      return;
+
 
     task.pic
     .split(",")
-    .map(name => name.trim())
+    .map(
+      name =>
+      name.trim()
+    )
     .filter(Boolean)
-    .forEach(name => pics.add(name));
+    .forEach(
+      name =>
+      pics.add(name)
+    );
 
   });
 
 
   departmentSelect.innerHTML =
-    `<option value="">All Departments</option>` +
+
+    `<option value="">
+      All Departments
+    </option>`
+
+    +
+
     departments
-    .map(d =>
-      `<option value="${escapeHTML(d)}">
-        ${escapeHTML(d)}
+    .map(
+      department =>
+
+      `<option value="${escapeHTML(department)}">
+        ${escapeHTML(department)}
       </option>`
+
     )
     .join("");
 
 
   picSelect.innerHTML =
-    `<option value="">All PIC</option>` +
+
+    `<option value="">
+      All PIC
+    </option>`
+
+    +
+
     [...pics]
     .sort()
-    .map(p =>
-      `<option value="${escapeHTML(p)}">
-        ${escapeHTML(p)}
+    .map(
+
+      pic =>
+
+      `<option value="${escapeHTML(pic)}">
+        ${escapeHTML(pic)}
       </option>`
+
     )
     .join("");
 
 
-  departmentSelect.value = currentDept;
-  picSelect.value = currentPic;
+  departmentSelect.value =
+    currentDept;
+
+  picSelect.value =
+    currentPic;
 
 }
 
 
 /* CLEAR FILTER */
 
-window.clearFilters = function() {
+window.clearFilters =
+function() {
 
-  document.getElementById("departmentFilter").value = "";
-  document.getElementById("picFilter").value = "";
-  document.getElementById("statusFilter").value = "";
-  document.getElementById("fromDate").value = "";
-  document.getElementById("toDate").value = "";
+  document
+  .getElementById(
+    "departmentFilter"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "picFilter"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "statusFilter"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "fromDate"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "toDate"
+  )
+  .value = "";
 
   render();
 
 };
 
 
-/* ADD */
+/* ADD TASK */
 
-window.openAddModal = function() {
+window.openAddModal =
+function() {
 
   editingID = null;
 
-  document.getElementById("modalTitle")
-    .innerText = "Add Task";
 
-  document.getElementById("deleteButton")
-    .style.display = "none";
+  document
+  .getElementById(
+    "modalTitle"
+  )
+  .innerText =
+    "Add Task";
 
-  document.getElementById("department").value = "";
-  document.getElementById("task").value = "";
-  document.getElementById("pic").value = "";
-  document.getElementById("due").value = "";
-  document.getElementById("status").value =
+
+  document
+  .getElementById(
+    "deleteButton"
+  )
+  .style.display =
+    "none";
+
+
+  document
+  .getElementById(
+    "department"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "task"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "pic"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "due"
+  )
+  .value = "";
+
+  document
+  .getElementById(
+    "status"
+  )
+  .value =
     "Not Started";
 
-  document.getElementById("modal")
-    .style.display = "flex";
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .style.display =
+    "flex";
 
 };
 
 
-/* EDIT */
+/* EDIT TASK */
 
-window.editTask = function(id) {
+window.editTask =
+function(id) {
 
   const item =
-    tasks.find(task => task.id === id);
+    tasks.find(
+      task =>
+      task.id === id
+    );
 
-  if (!item) return;
+
+  if (!item)
+    return;
+
 
   editingID = id;
 
-  document.getElementById("modalTitle")
-    .innerText = "Edit Task";
 
-  document.getElementById("deleteButton")
-    .style.display = "block";
+  document
+  .getElementById(
+    "modalTitle"
+  )
+  .innerText =
+    "Edit Task";
 
-  document.getElementById("department").value =
+
+  document
+  .getElementById(
+    "deleteButton"
+  )
+  .style.display =
+    "block";
+
+
+  document
+  .getElementById(
+    "department"
+  )
+  .value =
     item.department || "";
 
-  document.getElementById("task").value =
+
+  document
+  .getElementById(
+    "task"
+  )
+  .value =
     item.task || "";
 
-  document.getElementById("pic").value =
+
+  document
+  .getElementById(
+    "pic"
+  )
+  .value =
     item.pic || "";
 
-  document.getElementById("due").value =
+
+  document
+  .getElementById(
+    "due"
+  )
+  .value =
     item.due || "";
 
-  document.getElementById("status").value =
-    item.status || "Not Started";
 
-  document.getElementById("modal")
-    .style.display = "flex";
+  document
+  .getElementById(
+    "status"
+  )
+  .value =
+    item.status ||
+    "Not Started";
+
+
+  document
+  .getElementById(
+    "modal"
+  )
+  .style.display =
+    "flex";
 
 };
 
 
 /* SAVE */
 
-window.saveTask = async function() {
+window.saveTask =
+async function() {
 
   const department =
-    document.getElementById("department")
-    .value.trim();
+
+    document
+    .getElementById(
+      "department"
+    )
+    .value
+    .trim();
+
 
   const task =
-    document.getElementById("task")
-    .value.trim();
+
+    document
+    .getElementById(
+      "task"
+    )
+    .value
+    .trim();
+
 
   const pic =
-    document.getElementById("pic")
-    .value.trim();
+
+    document
+    .getElementById(
+      "pic"
+    )
+    .value
+    .trim();
+
 
   const due =
-    document.getElementById("due")
+
+    document
+    .getElementById(
+      "due"
+    )
     .value;
 
+
   const status =
-    document.getElementById("status")
+
+    document
+    .getElementById(
+      "status"
+    )
     .value;
 
 
   if (!department) {
-    alert("Please enter a department.");
+
+    alert(
+      "Please enter a department."
+    );
+
     return;
+
   }
 
+
   if (!task) {
-    alert("Please enter a task.");
+
+    alert(
+      "Please enter a task."
+    );
+
     return;
+
   }
 
 
   const data = {
+
     department,
     task,
     pic,
     due,
     status
+
   };
 
 
-  if (editingID) {
+  try {
 
-    await updateDoc(
-      doc(db, "tasks", editingID),
-      data
-    );
+    if (editingID) {
+
+      await updateDoc(
+
+        doc(
+          db,
+          "tasks",
+          editingID
+        ),
+
+        data
+
+      );
+
+    }
+
+    else {
+
+      data.createdAt =
+        serverTimestamp();
+
+
+      await addDoc(
+
+        tasksCollection,
+
+        data
+
+      );
+
+    }
+
+
+    closeModal();
 
   }
 
-  else {
+  catch(error) {
 
-    data.createdAt =
-      serverTimestamp();
+    console.error(error);
 
-    await addDoc(
-      tasksCollection,
-      data
+    alert(
+      "Unable to save task. Please check Firebase permissions."
     );
 
   }
-
-  closeModal();
 
 };
 
 
 /* DELETE */
 
-window.deleteTask = async function() {
+window.deleteTask =
+async function() {
 
-  if (!editingID) return;
-
-  if (!confirm("Delete this task?"))
+  if (!editingID)
     return;
 
-  await deleteDoc(
-    doc(db, "tasks", editingID)
-  );
 
-  closeModal();
+  if (
+    !confirm(
+      "Delete this task?"
+    )
+  )
+    return;
+
+
+  try {
+
+    await deleteDoc(
+
+      doc(
+        db,
+        "tasks",
+        editingID
+      )
+
+    );
+
+
+    closeModal();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to delete task."
+    );
+
+  }
 
 };
 
 
-/* CLOSE */
+/* CLOSE MODAL */
 
-window.closeModal = function() {
+window.closeModal =
+function() {
 
-  document.getElementById("modal")
-    .style.display = "none";
+  document
+  .getElementById(
+    "modal"
+  )
+  .style.display =
+    "none";
 
   editingID = null;
 
 };
 
 
-/* DATE */
+document
+.getElementById("modal")
+.addEventListener(
 
-function getDeadline(dueDate, status) {
+  "click",
 
-  if (!dueDate) return {
-    text:"",
-    className:""
-  };
+  function(event) {
 
-  if (status === "Completed") {
+    if (
+      event.target === this
+    ) {
+
+      closeModal();
+
+    }
+
+  }
+
+);
+
+
+/* DEADLINE */
+
+function getDeadline(
+  dueDate,
+  status
+) {
+
+  if (!dueDate) {
 
     return {
-      text:"Completed",
-      className:"done-date"
+
+      text: "",
+      className: ""
+
     };
 
   }
 
-  const today = new Date();
-  today.setHours(0,0,0,0);
+
+  if (
+    status === "Completed"
+  ) {
+
+    return {
+
+      text:
+        "Completed",
+
+      className:
+        "done-date"
+
+    };
+
+  }
+
+
+  const today =
+    new Date();
+
+  today.setHours(
+    0,0,0,0
+  );
+
 
   const due =
-    new Date(dueDate + "T00:00:00");
+    new Date(
+      dueDate +
+      "T00:00:00"
+    );
+
 
   const days =
     Math.round(
-      (due - today) /
-      86400000
+      (due - today)
+      / 86400000
     );
 
 
   if (days < 0) {
 
     return {
+
       text:
         "⚠ " +
         Math.abs(days) +
@@ -970,6 +1683,7 @@ function getDeadline(dueDate, status) {
 
       className:
         "overdue"
+
     };
 
   }
@@ -978,8 +1692,13 @@ function getDeadline(dueDate, status) {
   if (days === 0) {
 
     return {
-      text:"⚠ Due today",
-      className:"overdue"
+
+      text:
+        "⚠ Due today",
+
+      className:
+        "overdue"
+
     };
 
   }
@@ -988,6 +1707,7 @@ function getDeadline(dueDate, status) {
   if (days <= 7) {
 
     return {
+
       text:
         "Due in " +
         days +
@@ -995,12 +1715,14 @@ function getDeadline(dueDate, status) {
 
       className:
         "due-soon"
+
     };
 
   }
 
 
   return {
+
     text:
       "Due in " +
       days +
@@ -1008,38 +1730,65 @@ function getDeadline(dueDate, status) {
 
     className:
       "due-normal"
+
   };
 
 }
 
 
-function formatDate(dateString) {
+/* FORMAT DATE */
 
-  if (!dateString) return "—";
+function formatDate(
+  dateString
+) {
+
+  if (!dateString)
+    return "—";
+
 
   const date =
-    new Date(dateString + "T00:00:00");
+    new Date(
+      dateString +
+      "T00:00:00"
+    );
 
-  return date.toLocaleDateString(
+
+  return date
+  .toLocaleDateString(
+
     "en-GB",
+
     {
-      day:"2-digit",
-      month:"2-digit"
+
+      day: "2-digit",
+      month: "2-digit"
+
     }
+
   );
 
 }
 
 
-/* STATUS */
+/* STATUS STYLE */
 
-function statusClass(status) {
+function statusClass(
+  status
+) {
 
-  if (status === "Completed")
+  if (
+    status ===
+    "Completed"
+  )
     return "completed";
 
-  if (status === "In Progress")
+
+  if (
+    status ===
+    "In Progress"
+  )
     return "in-progress";
+
 
   return "not-started";
 
@@ -1048,59 +1797,120 @@ function statusClass(status) {
 
 /* SAFE HTML */
 
-function escapeHTML(value) {
+function escapeHTML(
+  value
+) {
 
-  return String(value || "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value || ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
 
 }
 
 
-/* COLLAPSE */
+/* COLLAPSE SECTION */
 
-window.toggleSection = function(id) {
+window.toggleSection =
+function(id) {
 
-  const section =
-    document.getElementById(id);
+  const element =
 
-  section.style.display =
-    section.style.display === "none"
+    document
+    .getElementById(id);
+
+
+  element.style.display =
+
+    element.style.display
+    === "none"
+
     ? "block"
+
     : "none";
 
 };
 
 
-/* RENDER */
+/* TASK RENDER */
 
-window.render = function() {
+window.render =
+function() {
 
   const tracker =
-    document.getElementById("tracker");
+
+    document
+    .getElementById(
+      "tracker"
+    );
 
 
   const departmentFilter =
-    document.getElementById("departmentFilter")
+
+    document
+    .getElementById(
+      "departmentFilter"
+    )
     .value;
+
 
   const picFilter =
-    document.getElementById("picFilter")
+
+    document
+    .getElementById(
+      "picFilter"
+    )
     .value;
+
 
   const statusFilter =
-    document.getElementById("statusFilter")
+
+    document
+    .getElementById(
+      "statusFilter"
+    )
     .value;
+
 
   const fromDate =
-    document.getElementById("fromDate")
+
+    document
+    .getElementById(
+      "fromDate"
+    )
     .value;
 
+
   const toDate =
-    document.getElementById("toDate")
+
+    document
+    .getElementById(
+      "toDate"
+    )
     .value;
 
 
@@ -1110,7 +1920,8 @@ window.render = function() {
 
       if (
         departmentFilter &&
-        item.department !== departmentFilter
+        item.department !==
+        departmentFilter
       )
         return false;
 
@@ -1118,11 +1929,19 @@ window.render = function() {
       if (picFilter) {
 
         const itemPics =
+
           (item.pic || "")
           .split(",")
-          .map(x => x.trim());
+          .map(
+            x => x.trim()
+          );
 
-        if (!itemPics.includes(picFilter))
+
+        if (
+          !itemPics.includes(
+            picFilter
+          )
+        )
           return false;
 
       }
@@ -1130,7 +1949,8 @@ window.render = function() {
 
       if (
         statusFilter &&
-        item.status !== statusFilter
+        item.status !==
+        statusFilter
       )
         return false;
 
@@ -1138,7 +1958,8 @@ window.render = function() {
       if (
         fromDate &&
         item.due &&
-        item.due < fromDate
+        item.due <
+        fromDate
       )
         return false;
 
@@ -1146,7 +1967,8 @@ window.render = function() {
       if (
         toDate &&
         item.due &&
-        item.due > toDate
+        item.due >
+        toDate
       )
         return false;
 
@@ -1156,29 +1978,44 @@ window.render = function() {
     });
 
 
-  document.getElementById("filterCount")
-    .textContent =
-      filtered.length +
-      " of " +
-      tasks.length +
-      " tasks shown";
+  document
+  .getElementById(
+    "filterCount"
+  )
+  .textContent =
+
+    filtered.length +
+    " of " +
+    tasks.length +
+    " tasks shown";
 
 
-  filtered.sort((a,b) => {
+  filtered.sort(
+    (a,b) => {
 
-    if (!a.due) return 1;
-    if (!b.due) return -1;
+      if (!a.due)
+        return 1;
 
-    return a.due.localeCompare(b.due);
+      if (!b.due)
+        return -1;
 
-  });
+      return a.due
+      .localeCompare(
+        b.due
+      );
+
+    }
+  );
 
 
-  if (filtered.length === 0) {
+  if (
+    filtered.length === 0
+  ) {
 
     tracker.innerHTML =
+
       `<div class="empty">
-        No tasks match the selected filters.
+      No tasks match the selected filters.
       </div>`;
 
     return;
@@ -1186,200 +2023,702 @@ window.render = function() {
   }
 
 
-  const departments = {};
+  const departments =
+    {};
 
 
   filtered.forEach(item => {
 
     const department =
-      item.department || "General";
 
-    if (!departments[department])
-      departments[department] = [];
+      item.department ||
+      "General";
 
-    departments[department].push(item);
+
+    if (
+      !departments[
+        department
+      ]
+    ) {
+
+      departments[
+        department
+      ] = [];
+
+    }
+
+
+    departments[
+      department
+    ].push(item);
 
   });
 
 
-  tracker.innerHTML = "";
+  tracker.innerHTML =
+    "";
 
 
-  Object.keys(departments)
-  .forEach((department,index) => {
+  Object
+  .keys(departments)
+  .forEach(
 
-    const sectionTasks =
-      departments[department];
+    (department,index) => {
 
-    const completed =
-      sectionTasks.filter(
-        task =>
-        task.status === "Completed"
-      ).length;
 
-    const percentage =
-      Math.round(
-        completed /
-        sectionTasks.length *
-        100
+      const sectionTasks =
+
+        departments[
+          department
+        ];
+
+
+      const completed =
+
+        sectionTasks
+        .filter(
+
+          task =>
+          task.status ===
+          "Completed"
+
+        )
+        .length;
+
+
+      const percentage =
+
+        Math.round(
+
+          completed /
+          sectionTasks.length *
+          100
+
+        );
+
+
+      const id =
+
+        "section-" +
+        index;
+
+
+      const section =
+
+        document
+        .createElement(
+          "div"
+        );
+
+
+      section.className =
+        "section";
+
+
+      section.innerHTML = `
+
+        <div
+          class="section-header"
+          onclick="toggleSection('${id}')"
+        >
+
+          <div
+            class="section-title-area"
+          >
+
+            <span class="arrow">
+              ▾
+            </span>
+
+            <span
+              class="section-title"
+            >
+              ${escapeHTML(
+                department
+              )}
+            </span>
+
+            <span
+              class="task-count"
+            >
+              ${sectionTasks.length}
+              tasks
+            </span>
+
+          </div>
+
+
+          <div
+            class="section-progress"
+          >
+            ${percentage}%
+          </div>
+
+        </div>
+
+
+        <div
+          class="section-content"
+          id="${id}"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th
+                  style="width:38%"
+                >
+                  TASK
+                </th>
+
+                <th
+                  style="width:22%"
+                >
+                  PIC
+                </th>
+
+                <th
+                  style="width:22%"
+                >
+                  DATES
+                </th>
+
+                <th
+                  style="width:15%"
+                >
+                  STATUS
+                </th>
+
+                <th>
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            ${sectionTasks
+            .map(item => {
+
+
+              const deadline =
+
+                getDeadline(
+                  item.due,
+                  item.status
+                );
+
+
+              return `
+
+                <tr>
+
+                  <td>
+
+                    <div
+                      class="task-name"
+                    >
+                      ${escapeHTML(
+                        item.task
+                      )}
+                    </div>
+
+                    <div
+                      class="task-label"
+                    >
+                      Deadline
+                    </div>
+
+                  </td>
+
+
+                  <td>
+
+                    ${escapeHTML(
+                      item.pic ||
+                      "—"
+                    )}
+
+                  </td>
+
+
+                  <td>
+
+                    <span
+                      class="date-main"
+                    >
+                      ${formatDate(
+                        item.due
+                      )}
+                    </span>
+
+
+                    ${
+                      deadline.text
+
+                      ?
+
+                      `<span
+                        class="
+                          deadline-badge
+                          ${deadline.className}
+                        "
+                      >
+                        ${deadline.text}
+                      </span>`
+
+                      :
+
+                      ""
+                    }
+
+                  </td>
+
+
+                  <td>
+
+                    <span
+                      class="
+                        status
+                        ${statusClass(
+                          item.status
+                        )}
+                      "
+                    >
+
+                      ${escapeHTML(
+                        item.status
+                      )}
+
+                    </span>
+
+                  </td>
+
+
+                  <td>
+
+                    <button
+                      class="edit-btn"
+                      onclick="
+                        editTask(
+                          '${item.id}'
+                        )
+                      "
+                    >
+                      ✎
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              `;
+
+            })
+            .join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      `;
+
+
+      tracker
+      .appendChild(
+        section
       );
 
-    const id =
-      "section-" + index;
+    }
+
+  );
+
+};
 
 
-    const section =
-      document.createElement("div");
+/* CALENDAR FILTER */
 
-    section.className = "section";
+function updateCalendarDepartmentFilter() {
+
+  const select =
+
+    document
+    .getElementById(
+      "calendarDepartmentFilter"
+    );
 
 
-    section.innerHTML = `
+  const current =
+    select.value;
 
-      <div
-        class="section-header"
-        onclick="toggleSection('${id}')"
+
+  const departments =
+
+    [...new Set(
+
+      tasks
+      .map(
+        task =>
+        task.department
+      )
+      .filter(Boolean)
+
+    )].sort();
+
+
+  select.innerHTML =
+
+    `<option value="">
+      All Departments
+    </option>`
+
+    +
+
+    departments
+    .map(
+
+      department =>
+
+      `<option
+        value="${escapeHTML(
+          department
+        )}"
       >
+        ${escapeHTML(
+          department
+        )}
+      </option>`
 
-        <div class="section-title-area">
-
-          <span class="arrow">▾</span>
-
-          <span class="section-title">
-            ${escapeHTML(department)}
-          </span>
-
-          <span class="task-count">
-            ${sectionTasks.length}
-            tasks
-          </span>
-
-        </div>
-
-        <div class="section-progress">
-          ${percentage}%
-        </div>
-
-      </div>
+    )
+    .join("");
 
 
-      <div
-        class="section-content"
-        id="${id}"
+  select.value =
+    current;
+
+}
+
+
+/* MONTH CHANGE */
+
+window.changeMonth =
+function(amount) {
+
+  calendarDate
+  .setMonth(
+
+    calendarDate
+    .getMonth()
+    + amount
+
+  );
+
+
+  renderCalendar();
+
+};
+
+
+window.goToday =
+function() {
+
+  calendarDate =
+    new Date();
+
+  renderCalendar();
+
+};
+
+
+/* CALENDAR RENDER */
+
+window.renderCalendar =
+function() {
+
+  const grid =
+
+    document
+    .getElementById(
+      "calendarGrid"
+    );
+
+
+  const title =
+
+    document
+    .getElementById(
+      "calendarMonth"
+    );
+
+
+  const filter =
+
+    document
+    .getElementById(
+      "calendarDepartmentFilter"
+    )
+    .value;
+
+
+  const year =
+
+    calendarDate
+    .getFullYear();
+
+
+  const month =
+
+    calendarDate
+    .getMonth();
+
+
+  title.textContent =
+
+    calendarDate
+    .toLocaleDateString(
+
+      "en-US",
+
+      {
+        month:
+          "long",
+
+        year:
+          "numeric"
+      }
+
+    );
+
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    );
+
+
+  const lastDay =
+    new Date(
+      year,
+      month + 1,
+      0
+    );
+
+
+  let startDay =
+    firstDay
+    .getDay();
+
+
+  startDay =
+    startDay === 0
+
+    ? 6
+
+    : startDay - 1;
+
+
+  const daysInMonth =
+    lastDay
+    .getDate();
+
+
+  grid.innerHTML =
+    "";
+
+
+  for (
+    let i = 0;
+    i < startDay;
+    i++
+  ) {
+
+    const empty =
+
+      document
+      .createElement(
+        "div"
+      );
+
+
+    empty.className =
+      "calendar-cell calendar-empty";
+
+
+    grid.appendChild(
+      empty
+    );
+
+  }
+
+
+  for (
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ) {
+
+
+    const cell =
+
+      document
+      .createElement(
+        "div"
+      );
+
+
+    cell.className =
+      "calendar-cell";
+
+
+    const dateString =
+
+      `${year}-${String(
+        month + 1
+      ).padStart(
+        2,
+        "0"
+      )}-${String(
+        day
+      ).padStart(
+        2,
+        "0"
+      )}`;
+
+
+    const today =
+      new Date();
+
+
+    const todayString =
+
+      `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+      ).padStart(
+        2,
+        "0"
+      )}-${String(
+        today.getDate()
+      ).padStart(
+        2,
+        "0"
+      )}`;
+
+
+    if (
+      dateString ===
+      todayString
+    ) {
+
+      cell
+      .classList
+      .add(
+        "calendar-today"
+      );
+
+    }
+
+
+    const dayTasks =
+
+      tasks.filter(task => {
+
+
+        if (
+          task.due !==
+          dateString
+        )
+          return false;
+
+
+        if (
+          filter &&
+          task.department !==
+          filter
+        )
+          return false;
+
+
+        return true;
+
+      });
+
+
+    cell.innerHTML =
+
+      `<div
+        class="calendar-date"
       >
-
-      <table>
-
-        <thead>
-          <tr>
-
-            <th style="width:38%">TASK</th>
-            <th style="width:22%">PIC</th>
-            <th style="width:22%">DATES</th>
-            <th style="width:15%">STATUS</th>
-            <th></th>
-
-          </tr>
-        </thead>
+        ${day}
+      </div>`;
 
 
-        <tbody>
-
-        ${sectionTasks.map(item => {
-
-          const deadline =
-            getDeadline(
-              item.due,
-              item.status
-            );
-
-          return `
-
-            <tr>
-
-              <td>
-
-                <div class="task-name">
-                  ${escapeHTML(item.task)}
-                </div>
-
-                <div class="task-label">
-                  Deadline
-                </div>
-
-              </td>
+    dayTasks
+    .forEach(task => {
 
 
-              <td>
-                ${escapeHTML(item.pic || "—")}
-              </td>
+      const taskDiv =
+
+        document
+        .createElement(
+          "div"
+        );
 
 
-              <td>
+      taskDiv.className =
 
-                <span class="date-main">
-                  ${formatDate(item.due)}
-                </span>
-
-                ${
-                  deadline.text
-                  ?
-                  `<span class="
-                    deadline-badge
-                    ${deadline.className}
-                  ">
-                    ${deadline.text}
-                  </span>`
-                  :
-                  ""
-                }
-
-              </td>
+        "calendar-task " +
+        statusClass(
+          task.status
+        );
 
 
-              <td>
+      taskDiv.innerHTML =
 
-                <span class="
-                  status
-                  ${statusClass(item.status)}
-                ">
-                  ${escapeHTML(item.status)}
-                </span>
+        `<strong>
+          ${escapeHTML(
+            task.task
+          )}
+        </strong>
 
-              </td>
+        <br>
 
-
-              <td>
-
-                <button
-                  class="edit-btn"
-                  onclick="
-                    editTask('${item.id}')
-                  "
-                >
-                  ✎
-                </button>
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }).join("")}
-
-        </tbody>
-
-      </table>
-
-      </div>
-
-    `;
+        <span
+          class="calendar-task-pic"
+        >
+          ${escapeHTML(
+            task.pic || ""
+          )}
+        </span>`;
 
 
-    tracker.appendChild(section);
+      taskDiv.onclick =
+        () =>
+        editTask(
+          task.id
+        );
 
-  });
+
+      cell.appendChild(
+        taskDiv
+      );
+
+    });
+
+
+    grid.appendChild(
+      cell
+    );
+
+  }
 
 };
 
