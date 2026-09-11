@@ -1,228 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Online Journalism Asm1</title>
+<title>Online Journalism Asm1 Tracker</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f6f6f4;
-      color: #222;
-    }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: #f7f7f5;
+  color: #292929;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 40px 20px;
-    }
+.container {
+  width: 94%;
+  max-width: 1250px;
+  margin: 45px auto;
+}
 
-    h1 {
-      margin-bottom: 5px;
-    }
+/* HEADER */
 
-    .subtitle {
-      color: #777;
-      margin-bottom: 30px;
-    }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 15px;
-    }
+.header h1 {
+  margin: 0;
+  font-size: 30px;
+}
 
-    button {
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
+.subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-top: 5px;
+}
 
-    .add-btn {
-      background: #222;
-      color: white;
-    }
+.add-btn {
+  background: #2f3437;
+  color: white;
+  border: none;
+  padding: 11px 17px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-    .department {
-      background: white;
-      border: 1px solid #e3e3e3;
-      border-radius: 10px;
-      margin-bottom: 18px;
-      overflow: hidden;
-    }
+/* SECTION */
 
-    .department-title {
-      padding: 15px 18px;
-      font-weight: bold;
-      background: #fafafa;
-      border-bottom: 1px solid #eee;
-    }
+.section {
+  background: white;
+  border-radius: 9px;
+  margin-bottom: 25px;
+  border: 1px solid #ececec;
+  overflow: hidden;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+.section-header {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: #fafafa;
+}
 
-    th {
-      text-align: left;
-      font-size: 11px;
-      color: #777;
-      padding: 12px;
-      background: #fcfcfc;
-    }
+.section-title-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    td {
-      padding: 13px 12px;
-      border-top: 1px solid #eee;
-      font-size: 13px;
-    }
+.arrow {
+  font-size: 12px;
+  color: #777;
+  transition: 0.2s;
+}
 
-    .task {
-      font-weight: 600;
-    }
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+}
 
-    .badge {
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      display: inline-block;
-    }
+.task-count {
+  font-size: 11px;
+  color: #999;
+}
 
-    .todo {
-      background: #eee;
-    }
+.section-progress {
+  font-size: 11px;
+  color: #999;
+}
 
-    .inprogress {
-      background: #fff0bd;
-    }
+.section-content {
+  overflow-x: auto;
+}
 
-    .completed {
-      background: #dff3e5;
-    }
+/* TABLE */
 
-    .high {
-      background: #ffe0e0;
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
 
-    .medium {
-      background: #fff1c9;
-    }
+th {
+  text-align: left;
+  padding: 12px 18px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #8b8b8b;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+}
 
-    .low {
-      background: #e3efff;
-    }
+td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13px;
+}
 
-    .overdue {
-      color: #c0392b;
-      font-size: 11px;
-      font-weight: bold;
-      margin-top: 4px;
-    }
+tr:last-child td {
+  border-bottom: none;
+}
 
-    .due {
-      color: #9a7200;
-      font-size: 11px;
-      margin-top: 4px;
-    }
+.task-name {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
 
-    .actions button {
-      background: transparent;
-      padding: 5px;
-      font-size: 14px;
-    }
+.task-label {
+  color: #aaa;
+  font-size: 10px;
+}
 
-    /* MODAL */
+/* DATE */
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.35);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+.date-main {
+  display: inline-block;
+  margin-right: 7px;
+}
 
-    .modal-box {
-      background: white;
-      width: 100%;
-      max-width: 500px;
-      border-radius: 12px;
-      padding: 25px;
-    }
+.deadline-badge {
+  display: inline-block;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+}
 
-    .modal-box h2 {
-      margin-top: 0;
-    }
+.overdue {
+  background: #fde8e7;
+  color: #b64c46;
+}
 
-    label {
-      display: block;
-      font-size: 12px;
-      margin-top: 14px;
-      margin-bottom: 5px;
-      color: #555;
-    }
+.due-soon {
+  background: #fff2d5;
+  color: #8c6a22;
+}
 
-    input,
-    select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 7px;
-    }
+.due-normal {
+  background: #f1f1ef;
+  color: #777;
+}
 
-    .modal-buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 22px;
-    }
+.done-date {
+  background: #e8f3ea;
+  color: #4d7655;
+}
 
-    .cancel {
-      background: #eee;
-    }
+/* STATUS */
 
-    .save {
-      background: #222;
-      color: white;
-    }
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  white-space: nowrap;
+}
 
-    .delete {
-      background: #ffe1e1;
-      color: #a40000;
-      margin-right: auto;
-    }
+.not-started {
+  background: #eeeeec;
+  color: #666;
+}
 
-    @media(max-width:800px) {
+.in-progress {
+  background: #fff0bd;
+  color: #7c621b;
+}
 
-      .department {
-        overflow-x: auto;
-      }
+.completed {
+  background: #dfeee2;
+  color: #4b7154;
+}
 
-      table {
-        min-width: 850px;
-      }
+/* EDIT */
 
-    }
-  </style>
+.edit-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #777;
+  font-size: 14px;
+}
+
+/* EMPTY */
+
+.empty {
+  padding: 25px;
+  color: #888;
+}
+
+/* MODAL */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-box {
+  background: white;
+  width: 100%;
+  max-width: 460px;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.modal-box h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #555;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 9px;
+  margin-top: 25px;
+  justify-content: flex-end;
+}
+
+.modal-buttons button {
+  padding: 9px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #2f3437;
+  color: white;
+}
+
+.cancel-btn {
+  background: #eee;
+}
+
+.delete-btn {
+  background: #fde6e6;
+  color: #b23030;
+  margin-right: auto;
+}
+
+/* MOBILE */
+
+@media(max-width: 700px) {
+
+  .container {
+    width: 96%;
+    margin-top: 25px;
+  }
+
+  .header h1 {
+    font-size: 23px;
+  }
+
+  .add-btn {
+    font-size: 12px;
+  }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="container">
 
-  <div class="topbar">
+  <div class="header">
 
     <div>
       <h1>Online Journalism Asm1</h1>
@@ -244,7 +339,7 @@
 </div>
 
 
-<!-- ADD / EDIT WINDOW -->
+<!-- ADD / EDIT MODAL -->
 
 <div class="modal" id="modal">
 
@@ -252,60 +347,43 @@
 
     <h2 id="modalTitle">Add Task</h2>
 
-    <label>Task</label>
-    <input id="task">
-
-    <label>Department</label>
+    <label>Department / Section</label>
     <input
       id="department"
       placeholder="e.g. Writing"
     >
 
-    <label>Position</label>
+    <label>Task</label>
     <input
-      id="position"
-      placeholder="e.g. Writer"
+      id="task"
+      placeholder="Task name"
     >
 
     <label>PIC</label>
     <input
       id="pic"
-      placeholder="Name"
+      placeholder="e.g. Chang Yi, Ashley"
     >
 
-    <label>Due Date</label>
+    <label>Date</label>
     <input
       type="date"
       id="due"
     >
 
     <label>Status</label>
+
     <select id="status">
-      <option>To Do</option>
+      <option>Not Started</option>
       <option>In Progress</option>
       <option>Completed</option>
     </select>
 
-    <label>Progress (%)</label>
-    <input
-      type="number"
-      id="progress"
-      min="0"
-      max="100"
-      value="0"
-    >
-
-    <label>Priority</label>
-    <select id="priority">
-      <option>Low</option>
-      <option>Medium</option>
-      <option>High</option>
-    </select>
 
     <div class="modal-buttons">
 
       <button
-        class="delete"
+        class="delete-btn"
         id="deleteButton"
         onclick="deleteTask()"
         style="display:none"
@@ -314,14 +392,14 @@
       </button>
 
       <button
-        class="cancel"
+        class="cancel-btn"
         onclick="closeModal()"
       >
         Cancel
       </button>
 
       <button
-        class="save"
+        class="save-btn"
         onclick="saveTask()"
       >
         Save
@@ -336,405 +414,649 @@
 
 <script type="module">
 
-  import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    onSnapshot,
-    doc,
-    updateDoc,
-    deleteDoc
-  }
-  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import {
+  initializeApp
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
 
-  /* YOUR FIREBASE */
-
-  const firebaseConfig = {
-
-    apiKey:
-    "AIzaSyDZ3oh1Adjnz_-d5MMJj8vBSWHZQGfkx3I",
-
-    authDomain:
-    "online-journalism-asm1.firebaseapp.com",
-
-    projectId:
-    "online-journalism-asm1",
-
-    storageBucket:
-    "online-journalism-asm1.firebasestorage.app",
-
-    messagingSenderId:
-    "742635372867",
-
-    appId:
-    "1:742635372867:web:e4b0b33cc5aae5b583aff6",
-
-    measurementId:
-    "G-H88Z242G80"
-
-  };
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 
-  const app =
-    initializeApp(firebaseConfig);
+/* FIREBASE */
 
-  const db =
-    getFirestore(app);
+const firebaseConfig = {
+
+  apiKey:
+  "AIzaSyDZ3oh1Adjnz_-d5MMJj8vBSWHZQGfkx3I",
+
+  authDomain:
+  "online-journalism-asm1.firebaseapp.com",
+
+  projectId:
+  "online-journalism-asm1",
+
+  storageBucket:
+  "online-journalism-asm1.firebasestorage.app",
+
+  messagingSenderId:
+  "742635372867",
+
+  appId:
+  "1:742635372867:web:e4b0b33cc5aae5b583aff6",
+
+  measurementId:
+  "G-H88Z242G80"
+
+};
 
 
-  const tasksCollection =
-    collection(db, "tasks");
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const tasksCollection =
+  collection(db, "tasks");
 
 
-  let tasks = [];
+let tasks = [];
 
-  let editingID = null;
+let editingID = null;
 
 
-  /* REAL TIME DATABASE */
+/* LIVE SYNC */
 
-  onSnapshot(tasksCollection, snapshot => {
+onSnapshot(
+  tasksCollection,
+
+  snapshot => {
 
     tasks = [];
 
-    snapshot.forEach(document => {
+    snapshot.forEach(item => {
 
       tasks.push({
-        id: document.id,
-        ...document.data()
+        id: item.id,
+        ...item.data()
       });
 
     });
 
     render();
 
-  });
+  },
 
+  error => {
 
-  /* ADD WINDOW */
+    console.error(error);
 
-  window.openAddModal = function() {
+    document.getElementById("tracker").innerHTML =
+      `<div class="empty">
+      Unable to load tasks. Please check Firestore permissions.
+      </div>`;
 
-    editingID = null;
+  }
+);
 
-    document.getElementById("modalTitle")
-      .innerText = "Add Task";
 
-    document.getElementById("deleteButton")
-      .style.display = "none";
+/* ADD TASK */
 
-    clearForm();
+window.openAddModal = function() {
 
-    document.getElementById("modal")
-      .style.display = "flex";
+  editingID = null;
 
-  };
+  document.getElementById("modalTitle")
+    .innerText = "Add Task";
 
+  document.getElementById("deleteButton")
+    .style.display = "none";
 
-  /* EDIT WINDOW */
+  document.getElementById("department").value = "";
+  document.getElementById("task").value = "";
+  document.getElementById("pic").value = "";
+  document.getElementById("due").value = "";
+  document.getElementById("status").value =
+    "Not Started";
 
-  window.editTask = function(id) {
+  document.getElementById("modal")
+    .style.display = "flex";
 
-    const item =
-      tasks.find(t => t.id === id);
+};
 
-    editingID = id;
 
-    document.getElementById("modalTitle")
-      .innerText = "Edit Task";
+/* EDIT TASK */
 
-    document.getElementById("deleteButton")
-      .style.display = "block";
+window.editTask = function(id) {
 
-    document.getElementById("task").value =
-      item.task || "";
+  const item =
+    tasks.find(task => task.id === id);
 
-    document.getElementById("department").value =
-      item.department || "";
+  if (!item) return;
 
-    document.getElementById("position").value =
-      item.position || "";
+  editingID = id;
 
-    document.getElementById("pic").value =
-      item.pic || "";
+  document.getElementById("modalTitle")
+    .innerText = "Edit Task";
 
-    document.getElementById("due").value =
-      item.due || "";
+  document.getElementById("deleteButton")
+    .style.display = "block";
 
-    document.getElementById("status").value =
-      item.status || "To Do";
+  document.getElementById("department").value =
+    item.department || "";
 
-    document.getElementById("progress").value =
-      item.progress ?? 0;
+  document.getElementById("task").value =
+    item.task || "";
 
-    document.getElementById("priority").value =
-      item.priority || "Medium";
+  document.getElementById("pic").value =
+    item.pic || "";
 
-    document.getElementById("modal")
-      .style.display = "flex";
+  document.getElementById("due").value =
+    item.due || "";
 
-  };
+  document.getElementById("status").value =
+    item.status || "Not Started";
 
+  document.getElementById("modal")
+    .style.display = "flex";
 
-  /* SAVE */
+};
 
-  window.saveTask = async function() {
 
-    const taskName =
-      document.getElementById("task").value.trim();
+/* SAVE */
 
-    if (!taskName) {
-      alert("Please enter a task.");
-      return;
-    }
+window.saveTask = async function() {
 
-    const data = {
+  const department =
+    document
+    .getElementById("department")
+    .value.trim();
 
-      task: taskName,
+  const task =
+    document
+    .getElementById("task")
+    .value.trim();
 
-      department:
-      document.getElementById("department")
-      .value.trim() || "General",
+  const pic =
+    document
+    .getElementById("pic")
+    .value.trim();
 
-      position:
-      document.getElementById("position")
-      .value.trim(),
+  const due =
+    document
+    .getElementById("due")
+    .value;
 
-      pic:
-      document.getElementById("pic")
-      .value.trim(),
+  const status =
+    document
+    .getElementById("status")
+    .value;
 
-      due:
-      document.getElementById("due")
-      .value,
 
-      status:
-      document.getElementById("status")
-      .value,
+  if (!task) {
 
-      progress:
-      Number(
-        document.getElementById("progress")
-        .value
-      ),
+    alert("Please enter a task.");
 
-      priority:
-      document.getElementById("priority")
-      .value
-
-    };
-
-
-    try {
-
-      if (editingID) {
-
-        await updateDoc(
-          doc(db, "tasks", editingID),
-          data
-        );
-
-      } else {
-
-        await addDoc(
-          tasksCollection,
-          data
-        );
-
-      }
-
-      closeModal();
-
-    }
-
-    catch(error) {
-
-      console.error(error);
-
-      alert(
-        "Unable to save. Check your Firebase Firestore rules."
-      );
-
-    }
-
-  };
-
-
-  /* DELETE */
-
-  window.deleteTask = async function() {
-
-    if (!editingID) return;
-
-    if (!confirm("Delete this task?"))
-      return;
-
-    try {
-
-      await deleteDoc(
-        doc(db, "tasks", editingID)
-      );
-
-      closeModal();
-
-    }
-
-    catch(error) {
-
-      console.error(error);
-
-      alert("Unable to delete task.");
-
-    }
-
-  };
-
-
-  /* CLOSE */
-
-  window.closeModal = function() {
-
-    document.getElementById("modal")
-      .style.display = "none";
-
-    editingID = null;
-
-  };
-
-
-  function clearForm() {
-
-    document.getElementById("task").value = "";
-    document.getElementById("department").value = "";
-    document.getElementById("position").value = "";
-    document.getElementById("pic").value = "";
-    document.getElementById("due").value = "";
-    document.getElementById("status").value = "To Do";
-    document.getElementById("progress").value = 0;
-    document.getElementById("priority").value = "Medium";
+    return;
 
   }
 
 
-  /* DEADLINE */
+  if (!department) {
 
-  function deadline(date, status) {
+    alert("Please enter a department / section.");
 
-    if (!date)
-      return "";
-
-    if (status === "Completed")
-      return "Completed";
-
-    const today = new Date();
-    today.setHours(0,0,0,0);
-
-    const due =
-      new Date(date + "T00:00:00");
-
-    const days =
-      Math.round(
-        (due - today) /
-        86400000
-      );
-
-
-    if (days === 0)
-      return "Due today";
-
-    if (days < 0)
-      return Math.abs(days) + "d overdue";
-
-    return "Due in " + days + "d";
+    return;
 
   }
 
 
-  function formatDate(date) {
+  const data = {
 
-    if (!date) return "—";
+    department,
+    task,
+    pic,
+    due,
+    status
 
-    const d =
-      new Date(date + "T00:00:00");
+  };
 
-    return d.toLocaleDateString(
-      "en-GB",
-      {
-        day:"2-digit",
-        month:"2-digit"
-      }
+
+  try {
+
+    if (editingID) {
+
+      await updateDoc(
+        doc(db, "tasks", editingID),
+        data
+      );
+
+    }
+
+    else {
+
+      data.createdAt =
+        serverTimestamp();
+
+      await addDoc(
+        tasksCollection,
+        data
+      );
+
+    }
+
+    closeModal();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to save task. Please check Firebase permissions."
     );
 
   }
 
+};
 
-  /* DISPLAY */
 
-  function render() {
+/* DELETE */
 
-    const tracker =
-      document.getElementById("tracker");
+window.deleteTask = async function() {
 
-    if (tasks.length === 0) {
+  if (!editingID)
+    return;
 
-      tracker.innerHTML =
-      "<p>No tasks yet. Click <b>+ Add Task</b> to start.</p>";
+  if (!confirm("Delete this task?"))
+    return;
 
-      return;
+  try {
+
+    await deleteDoc(
+      doc(db, "tasks", editingID)
+    );
+
+    closeModal();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    alert("Unable to delete task.");
+
+  }
+
+};
+
+
+/* CLOSE */
+
+window.closeModal = function() {
+
+  document.getElementById("modal")
+    .style.display = "none";
+
+  editingID = null;
+
+};
+
+
+/* CLICK OUTSIDE MODAL */
+
+document
+.getElementById("modal")
+.addEventListener(
+  "click",
+  function(event) {
+
+    if (event.target === this)
+      closeModal();
+
+  }
+);
+
+
+/* DATE COUNTDOWN */
+
+function getDeadline(dueDate, status) {
+
+  if (!dueDate) {
+
+    return {
+      text: "",
+      className: ""
+    };
+
+  }
+
+
+  if (status === "Completed") {
+
+    return {
+      text: "Completed",
+      className: "done-date"
+    };
+
+  }
+
+
+  const today =
+    new Date();
+
+  today.setHours(0,0,0,0);
+
+
+  const due =
+    new Date(
+      dueDate + "T00:00:00"
+    );
+
+
+  const difference =
+    due.getTime() -
+    today.getTime();
+
+
+  const days =
+    Math.round(
+      difference /
+      (1000 * 60 * 60 * 24)
+    );
+
+
+  if (days < 0) {
+
+    return {
+
+      text:
+        "⚠ " +
+        Math.abs(days) +
+        "d overdue",
+
+      className:
+        "overdue"
+
+    };
+
+  }
+
+
+  if (days === 0) {
+
+    return {
+
+      text:
+        "⚠ Due today",
+
+      className:
+        "overdue"
+
+    };
+
+  }
+
+
+  if (days <= 3) {
+
+    return {
+
+      text:
+        "⌛ Due in " +
+        days +
+        "d",
+
+      className:
+        "due-soon"
+
+    };
+
+  }
+
+
+  return {
+
+    text:
+      "Due in " +
+      days +
+      "d",
+
+    className:
+      "due-normal"
+
+  };
+
+}
+
+
+/* FORMAT DATE */
+
+function formatDate(dateString) {
+
+  if (!dateString)
+    return "—";
+
+
+  const date =
+    new Date(
+      dateString + "T00:00:00"
+    );
+
+
+  return date.toLocaleDateString(
+    "en-GB",
+
+    {
+      day: "2-digit",
+      month: "2-digit"
+    }
+
+  );
+
+}
+
+
+/* STATUS STYLE */
+
+function statusClass(status) {
+
+  if (status === "Completed")
+    return "completed";
+
+  if (status === "In Progress")
+    return "in-progress";
+
+  return "not-started";
+
+}
+
+
+/* SAFE TEXT */
+
+function escapeHTML(value) {
+
+  return String(value || "")
+
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* COLLAPSE SECTION */
+
+window.toggleSection = function(id) {
+
+  const element =
+    document.getElementById(id);
+
+  if (
+    element.style.display === "none"
+  ) {
+
+    element.style.display = "block";
+
+  }
+
+  else {
+
+    element.style.display = "none";
+
+  }
+
+};
+
+
+/* RENDER */
+
+function render() {
+
+  const tracker =
+    document.getElementById("tracker");
+
+
+  if (tasks.length === 0) {
+
+    tracker.innerHTML =
+      `<div class="empty">
+      No tasks yet. Click <b>+ Add Task</b> to start.
+      </div>`;
+
+    return;
+
+  }
+
+
+  /* SORT */
+
+  tasks.sort((a,b) => {
+
+    if (!a.due) return 1;
+
+    if (!b.due) return -1;
+
+    return a.due.localeCompare(b.due);
+
+  });
+
+
+  /* GROUP BY DEPARTMENT */
+
+  const departments = {};
+
+
+  tasks.forEach(item => {
+
+    const department =
+      item.department ||
+      "General";
+
+
+    if (!departments[department]) {
+
+      departments[department] = [];
 
     }
 
 
-    const departments = {};
+    departments[department]
+      .push(item);
 
-    tasks.forEach(task => {
-
-      const dept =
-        task.department || "General";
-
-      if (!departments[dept])
-        departments[dept] = [];
-
-      departments[dept].push(task);
-
-    });
+  });
 
 
-    tracker.innerHTML = "";
+  tracker.innerHTML = "";
 
 
-    Object.keys(departments)
-    .sort()
-    .forEach(dept => {
+  Object.keys(departments)
+  .forEach((department, index) => {
 
-      const section =
-        document.createElement("div");
-
-      section.className =
-        "department";
+    const sectionTasks =
+      departments[department];
 
 
-      section.innerHTML = `
+    const completed =
+      sectionTasks.filter(
+        task =>
+        task.status === "Completed"
+      ).length;
 
-        <div class="department-title">
 
-          ${dept}
+    const percentage =
+      Math.round(
+        completed /
+        sectionTasks.length *
+        100
+      );
 
-          <span style="
-            color:#999;
-            font-weight:normal;
-            font-size:12px;
-            margin-left:6px;
-          ">
-            ${departments[dept].length} tasks
+
+    const contentID =
+      "section-" + index;
+
+
+    const section =
+      document.createElement("div");
+
+
+    section.className =
+      "section";
+
+
+    section.innerHTML = `
+
+      <div
+        class="section-header"
+        onclick="toggleSection('${contentID}')"
+      >
+
+        <div class="section-title-area">
+
+          <span class="arrow">
+            ▾
+          </span>
+
+          <span class="section-title">
+            ${escapeHTML(department)}
+          </span>
+
+          <span class="task-count">
+            ${sectionTasks.length}
+            ${sectionTasks.length === 1
+              ? "task"
+              : "tasks"}
           </span>
 
         </div>
 
+
+        <div class="section-progress">
+
+          ${percentage}%
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="section-content"
+        id="${contentID}"
+      >
 
         <table>
 
@@ -742,150 +1064,157 @@
 
             <tr>
 
-              <th>Task</th>
-              <th>Position</th>
-              <th>PIC</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Progress</th>
-              <th>Priority</th>
-              <th></th>
+              <th style="width:38%">
+                TASK
+              </th>
+
+              <th style="width:22%">
+                PIC
+              </th>
+
+              <th style="width:22%">
+                DATES
+              </th>
+
+              <th style="width:15%">
+                STATUS
+              </th>
+
+              <th style="width:3%">
+              </th>
 
             </tr>
 
           </thead>
 
+
           <tbody>
 
-            ${departments[dept]
-            .map(item => {
+          ${sectionTasks.map(item => {
 
-              const deadlineText =
-                deadline(
-                  item.due,
-                  item.status
-                );
-
-
-              const deadlineClass =
-                deadlineText.includes("overdue")
-                || deadlineText === "Due today"
-                ? "overdue"
-                : "due";
+            const deadline =
+              getDeadline(
+                item.due,
+                item.status
+              );
 
 
-              let statusClass = "todo";
+            return `
 
-              if (
-                item.status === "In Progress"
-              )
-                statusClass =
-                  "inprogress";
+              <tr>
 
-              if (
-                item.status === "Completed"
-              )
-                statusClass =
-                  "completed";
+                <td>
+
+                  <div class="task-name">
+
+                    ${escapeHTML(
+                      item.task
+                    )}
+
+                  </div>
+
+                  <div class="task-label">
+
+                    Deadline
+
+                  </div>
+
+                </td>
 
 
-              const priorityClass =
-                (item.priority || "Medium")
-                .toLowerCase();
+                <td>
+
+                  ${escapeHTML(
+                    item.pic || "—"
+                  )}
+
+                </td>
 
 
-              return `
+                <td>
 
-                <tr>
+                  <span class="date-main">
 
-                  <td class="task">
-                    ${escapeHTML(item.task)}
-                  </td>
+                    ${formatDate(
+                      item.due
+                    )}
 
-                  <td>
-                    ${escapeHTML(item.position || "—")}
-                  </td>
+                  </span>
 
-                  <td>
-                    ${escapeHTML(item.pic || "—")}
-                  </td>
 
-                  <td>
-
-                    ${formatDate(item.due)}
-
-                    <div class="${deadlineClass}">
-                      ${deadlineText}
-                    </div>
-
-                  </td>
-
-                  <td>
-
-                    <span class="
-                      badge
-                      ${statusClass}
-                    ">
-                      ${item.status}
-                    </span>
-
-                  </td>
-
-                  <td>
-                    ${item.progress ?? 0}%
-                  </td>
-
-                  <td>
-
-                    <span class="
-                      badge
-                      ${priorityClass}
-                    ">
-                      ${item.priority}
-                    </span>
-
-                  </td>
-
-                  <td class="actions">
-
-                    <button
-                      onclick="editTask('${item.id}')"
+                  ${
+                    deadline.text
+                    ?
+                    `<span
+                      class="deadline-badge
+                      ${deadline.className}"
                     >
-                      ✏️
-                    </button>
+                      ${deadline.text}
+                    </span>`
+                    :
+                    ""
+                  }
 
-                  </td>
+                </td>
 
-                </tr>
 
-              `;
+                <td>
 
-            }).join("")}
+                  <span
+                    class="
+                      status
+                      ${statusClass(
+                        item.status
+                      )}
+                    "
+                  >
+
+                    ${escapeHTML(
+                      item.status
+                    )}
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <button
+                    class="edit-btn"
+                    onclick="
+                      editTask(
+                        '${item.id}'
+                      )
+                    "
+                  >
+                    ✎
+                  </button>
+
+                </td>
+
+              </tr>
+
+            `;
+
+          }).join("")}
 
           </tbody>
 
         </table>
 
-      `;
+      </div>
+
+    `;
 
 
-      tracker.appendChild(section);
+    tracker.appendChild(
+      section
+    );
 
-    });
+  });
 
-  }
-
-
-  function escapeHTML(value) {
-
-    return String(value || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-
-  }
+}
 
 </script>
 
