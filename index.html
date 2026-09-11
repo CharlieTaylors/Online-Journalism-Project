@@ -19,9 +19,9 @@ body {
 }
 
 .container {
-  width: 94%;
-  max-width: 1250px;
-  margin: 35px auto;
+  width: auto;
+  max-width: none;
+  margin: 30px 45px;
 }
 
 /* HEADER */
@@ -120,7 +120,7 @@ body {
   color: #c65959;
 }
 
-/* FILTER */
+/* FILTERS */
 
 .filters {
   background: white;
@@ -151,6 +151,7 @@ body {
   padding: 8px 13px;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 12px;
 }
 
 .filter-count {
@@ -159,7 +160,7 @@ body {
   font-size: 11px;
 }
 
-/* SECTIONS */
+/* SECTION */
 
 .section {
   background: white;
@@ -184,6 +185,11 @@ body {
   gap: 8px;
 }
 
+.arrow {
+  font-size: 12px;
+  color: #777;
+}
+
 .section-title {
   font-size: 14px;
   font-weight: 600;
@@ -195,11 +201,6 @@ body {
   color: #999;
 }
 
-.arrow {
-  font-size: 12px;
-  color: #777;
-}
-
 .section-content {
   overflow-x: auto;
 }
@@ -209,7 +210,7 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px;
+  min-width: 760px;
 }
 
 th {
@@ -237,17 +238,13 @@ tr:last-child td {
   margin-bottom: 4px;
 }
 
-/* NOTE */
-
 .task-note {
   color: #929292;
   font-size: 11px;
   line-height: 1.45;
-  max-width: 390px;
+  max-width: 450px;
   white-space: pre-wrap;
 }
-
-/* DATE */
 
 .date-main {
   display: inline-block;
@@ -281,8 +278,6 @@ tr:last-child td {
   background: #e8f3ea;
   color: #4d7655;
 }
-
-/* STATUS */
 
 .status {
   display: inline-block;
@@ -473,7 +468,7 @@ tr:last-child td {
 .modal-box {
   background: white;
   width: 100%;
-  max-width: 460px;
+  max-width: 470px;
   padding: 25px;
   border-radius: 12px;
   max-height: 90vh;
@@ -505,6 +500,16 @@ label {
 .modal-box textarea {
   min-height: 75px;
   resize: vertical;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.date-row label {
+  margin-top: 16px;
 }
 
 .modal-buttons {
@@ -543,7 +548,13 @@ label {
   border-radius: 8px;
 }
 
+/* MOBILE */
+
 @media(max-width: 750px) {
+
+  .container {
+    margin: 20px 16px;
+  }
 
   .stats {
     grid-template-columns: repeat(2, 1fr);
@@ -562,6 +573,11 @@ label {
   .filter-count {
     width: 100%;
     margin-left: 0;
+  }
+
+  .date-row {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 }
 </style>
@@ -712,7 +728,7 @@ label {
 </div>
 
 
-<!-- ADD / EDIT MODAL -->
+<!-- MODAL -->
 
 <div class="modal" id="modal">
 
@@ -720,13 +736,11 @@ label {
 
     <h2 id="modalTitle">Add Task</h2>
 
-
     <label>Department / Section</label>
     <input
       id="department"
       placeholder="e.g. Due Date"
     >
-
 
     <label>Task</label>
     <input
@@ -734,13 +748,11 @@ label {
       placeholder="e.g. Group Consultation - 12pm"
     >
 
-
     <label>Note</label>
     <textarea
       id="note"
       placeholder="Add details or reminders..."
     ></textarea>
-
 
     <label>PIC</label>
 
@@ -750,8 +762,26 @@ label {
     ></div>
 
 
-    <label>Date</label>
-    <input type="date" id="due">
+    <div class="date-row">
+
+      <div>
+        <label>Start Date</label>
+        <input
+          type="date"
+          id="startDate"
+          onchange="syncEndDate()"
+        >
+      </div>
+
+      <div>
+        <label>End Date</label>
+        <input
+          type="date"
+          id="endDate"
+        >
+      </div>
+
+    </div>
 
 
     <label>Status</label>
@@ -842,8 +872,6 @@ let editingID = null;
 let calendarDate = new Date();
 
 
-/* PIC LIST */
-
 const PIC_LIST = [
   "changyi",
   "lisa",
@@ -891,7 +919,27 @@ function displayPICs(pic) {
 }
 
 
-/* PIC CHECKBOX */
+function getTaskStart(item) {
+
+  return item.startDate ||
+         item.due ||
+         item.endDate ||
+         "";
+
+}
+
+
+function getTaskEnd(item) {
+
+  return item.endDate ||
+         item.due ||
+         item.startDate ||
+         "";
+
+}
+
+
+/* PIC */
 
 function renderPICCheckboxes(selectedPICs = []) {
 
@@ -1013,8 +1061,7 @@ function getSelectedPICs() {
     ...document.querySelectorAll(
       ".pic-person:checked"
     )
-  ]
-  .map(
+  ].map(
     checkbox =>
     checkbox.value
   );
@@ -1136,13 +1183,16 @@ function updateStats() {
 
     }
 
-    if (!item.due)
+    const endDate =
+      getTaskEnd(item);
+
+    if (!endDate)
       return;
 
 
     const due =
       new Date(
-        item.due +
+        endDate +
         "T00:00:00"
       );
 
@@ -1182,7 +1232,7 @@ function updateStats() {
 }
 
 
-/* FILTER OPTIONS */
+/* FILTER */
 
 function updateFilters() {
 
@@ -1212,9 +1262,7 @@ function updateFilters() {
     `<option value="">All Departments</option>` +
     departments
     .map(d =>
-      `<option value="${escapeHTML(d)}">
-        ${escapeHTML(d)}
-      </option>`
+      `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`
     )
     .join("");
 
@@ -1223,9 +1271,7 @@ function updateFilters() {
     `<option value="">All PIC</option>` +
     PIC_LIST
     .map(p =>
-      `<option value="${escapeHTML(p)}">
-        ${escapeHTML(p)}
-      </option>`
+      `<option value="${escapeHTML(p)}">${escapeHTML(p)}</option>`
     )
     .join("");
 
@@ -1271,7 +1317,8 @@ function() {
   document.getElementById("department").value = "";
   document.getElementById("task").value = "";
   document.getElementById("note").value = "";
-  document.getElementById("due").value = "";
+  document.getElementById("startDate").value = "";
+  document.getElementById("endDate").value = "";
   document.getElementById("status").value = "Not Started";
 
   renderPICCheckboxes([]);
@@ -1279,6 +1326,25 @@ function() {
   document.getElementById("modal")
     .style.display =
     "flex";
+
+};
+
+
+/* AUTO END DATE */
+
+window.syncEndDate =
+function() {
+
+  const start =
+    document.getElementById("startDate").value;
+
+  const end =
+    document.getElementById("endDate").value;
+
+  if (start && !end) {
+    document.getElementById("endDate").value =
+      start;
+  }
 
 };
 
@@ -1321,9 +1387,13 @@ function(id) {
     .value =
     item.note || "";
 
-  document.getElementById("due")
+  document.getElementById("startDate")
     .value =
-    item.due || "";
+    getTaskStart(item);
+
+  document.getElementById("endDate")
+    .value =
+    getTaskEnd(item);
 
   document.getElementById("status")
     .value =
@@ -1362,8 +1432,12 @@ async function() {
   const pic =
     getSelectedPICs();
 
-  const due =
-    document.getElementById("due")
+  const startDate =
+    document.getElementById("startDate")
+    .value;
+
+  let endDate =
+    document.getElementById("endDate")
     .value;
 
   const status =
@@ -1387,12 +1461,33 @@ async function() {
   }
 
 
+  if (startDate && !endDate)
+    endDate = startDate;
+
+
+  if (
+    startDate &&
+    endDate &&
+    endDate < startDate
+  ) {
+
+    alert(
+      "End Date cannot be earlier than Start Date."
+    );
+
+    return;
+
+  }
+
+
   const data = {
     department,
     task,
     note,
     pic,
-    due,
+    startDate,
+    endDate,
+    due: endDate,
     status
   };
 
@@ -1435,6 +1530,7 @@ async function() {
   catch(error) {
 
     console.error(error);
+
     alert("Unable to save task.");
 
   }
@@ -1474,6 +1570,7 @@ async function() {
   catch(error) {
 
     console.error(error);
+
     alert("Unable to delete task.");
 
   }
@@ -1507,11 +1604,11 @@ document.getElementById("modal")
 );
 
 
-/* DEADLINE */
+/* DATE HELPERS */
 
-function getDeadline(dueDate,status) {
+function getDeadline(endDate,status) {
 
-  if (!dueDate)
+  if (!endDate)
     return {
       text:"",
       className:""
@@ -1533,7 +1630,7 @@ function getDeadline(dueDate,status) {
 
   const due =
     new Date(
-      dueDate +
+      endDate +
       "T00:00:00"
     );
 
@@ -1577,7 +1674,7 @@ function getDeadline(dueDate,status) {
 }
 
 
-function formatDate(dateString) {
+function formatSingleDate(dateString) {
 
   if (!dateString)
     return "—";
@@ -1596,6 +1693,71 @@ function formatDate(dateString) {
       day:"2-digit",
       month:"2-digit"
     }
+  );
+
+}
+
+
+function formatDateRange(item) {
+
+  const start =
+    getTaskStart(item);
+
+  const end =
+    getTaskEnd(item);
+
+
+  if (!start && !end)
+    return "—";
+
+
+  if (!start)
+    return formatSingleDate(end);
+
+
+  if (!end)
+    return formatSingleDate(start);
+
+
+  if (start === end)
+    return formatSingleDate(start);
+
+
+  return (
+    formatSingleDate(start) +
+    " – " +
+    formatSingleDate(end)
+  );
+
+}
+
+
+function dateFallsInTask(
+  dateString,
+  item
+) {
+
+  const start =
+    getTaskStart(item);
+
+  const end =
+    getTaskEnd(item);
+
+
+  if (!start && !end)
+    return false;
+
+
+  const actualStart =
+    start || end;
+
+  const actualEnd =
+    end || start;
+
+
+  return (
+    dateString >= actualStart &&
+    dateString <= actualEnd
   );
 
 }
@@ -1630,7 +1792,7 @@ function(id) {
 };
 
 
-/* TASK RENDER */
+/* RENDER TASKS */
 
 window.render =
 function() {
@@ -1683,16 +1845,25 @@ function() {
         return false;
 
 
+      const start =
+        getTaskStart(item);
+
+      const end =
+        getTaskEnd(item);
+
+
       if (
         fromDate &&
-        (!item.due || item.due < fromDate)
+        end &&
+        end < fromDate
       )
         return false;
 
 
       if (
         toDate &&
-        (!item.due || item.due > toDate)
+        start &&
+        start > toDate
       )
         return false;
 
@@ -1712,16 +1883,22 @@ function() {
 
   filtered.sort((a,b) => {
 
-    if (!a.due && !b.due)
+    const aStart =
+      getTaskStart(a);
+
+    const bStart =
+      getTaskStart(b);
+
+    if (!aStart && !bStart)
       return 0;
 
-    if (!a.due)
+    if (!aStart)
       return 1;
 
-    if (!b.due)
+    if (!bStart)
       return -1;
 
-    return a.due.localeCompare(b.due);
+    return aStart.localeCompare(bStart);
 
   });
 
@@ -1824,10 +2001,10 @@ function() {
 
           <thead>
             <tr>
-              <th style="width:38%">TASK</th>
+              <th style="width:40%">TASK</th>
               <th style="width:22%">PIC</th>
               <th style="width:22%">DATES</th>
-              <th style="width:15%">STATUS</th>
+              <th style="width:13%">STATUS</th>
               <th></th>
             </tr>
           </thead>
@@ -1836,9 +2013,12 @@ function() {
 
           ${sectionTasks.map(item => {
 
+            const endDate =
+              getTaskEnd(item);
+
             const deadline =
               getDeadline(
-                item.due,
+                endDate,
                 item.status
               );
 
@@ -1877,7 +2057,7 @@ function() {
                 <td>
 
                   <span class="date-main">
-                    ${formatDate(item.due)}
+                    ${formatDateRange(item)}
                   </span>
 
                   ${
@@ -1973,9 +2153,7 @@ function updateCalendarDepartmentFilter() {
     `<option value="">All Departments</option>` +
     departments
     .map(d =>
-      `<option value="${escapeHTML(d)}">
-        ${escapeHTML(d)}
-      </option>`
+      `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`
     )
     .join("");
 
@@ -1986,7 +2164,7 @@ function updateCalendarDepartmentFilter() {
 }
 
 
-/* CALENDAR CONTROLS */
+/* CALENDAR CONTROL */
 
 window.changeMonth =
 function(amount) {
@@ -2135,14 +2313,21 @@ function() {
     const dayTasks =
       tasks.filter(task => {
 
-        if (task.due !== dateString)
+        if (
+          !dateFallsInTask(
+            dateString,
+            task
+          )
+        )
           return false;
+
 
         if (
           filter &&
           task.department !== filter
         )
           return false;
+
 
         return true;
 
