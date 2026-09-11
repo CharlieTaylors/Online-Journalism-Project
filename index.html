@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Online Journalism Asm1</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f6f4;
+      color: #222;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    button {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .add-btn {
+      background: #222;
+      color: white;
+    }
+
+    .department {
+      background: white;
+      border: 1px solid #e3e3e3;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .department-title {
+      padding: 15px 18px;
+      font-weight: bold;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-size: 11px;
+      color: #777;
+      padding: 12px;
+      background: #fcfcfc;
+    }
+
+    td {
+      padding: 13px 12px;
+      border-top: 1px solid #eee;
+      font-size: 13px;
+    }
+
+    .task {
+      font-weight: 600;
+    }
+
+    .badge {
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      display: inline-block;
+    }
+
+    .todo {
+      background: #eee;
+    }
+
+    .inprogress {
+      background: #fff0bd;
+    }
+
+    .completed {
+      background: #dff3e5;
+    }
+
+    .high {
+      background: #ffe0e0;
+    }
+
+    .medium {
+      background: #fff1c9;
+    }
+
+    .low {
+      background: #e3efff;
+    }
+
+    .overdue {
+      color: #c0392b;
+      font-size: 11px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    .due {
+      color: #9a7200;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .actions button {
+      background: transparent;
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    /* MODAL */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: white;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .modal-box h2 {
+      margin-top: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      margin-top: 14px;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .cancel {
+      background: #eee;
+    }
+
+    .save {
+      background: #222;
+      color: white;
+    }
+
+    .delete {
+      background: #ffe1e1;
+      color: #a40000;
+      margin-right: auto;
+    }
+
+    @media(max-width:800px) {
+
+      .department {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 850px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+
+    <div>
+      <h1>Online Journalism Asm1</h1>
+      <div class="subtitle">
+        Assignment Task Tracker
+      </div>
+    </div>
+
+    <button class="add-btn" onclick="openAddModal()">
+      + Add Task
+    </button>
+
+  </div>
+
+  <div id="tracker">
+    Loading...
+  </div>
+
+</div>
+
+
+<!-- ADD / EDIT WINDOW -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <h2 id="modalTitle">Add Task</h2>
+
+    <label>Task</label>
+    <input id="task">
+
+    <label>Department</label>
+    <input
+      id="department"
+      placeholder="e.g. Writing"
+    >
+
+    <label>Position</label>
+    <input
+      id="position"
+      placeholder="e.g. Writer"
+    >
+
+    <label>PIC</label>
+    <input
+      id="pic"
+      placeholder="Name"
+    >
+
+    <label>Due Date</label>
+    <input
+      type="date"
+      id="due"
+    >
+
+    <label>Status</label>
+    <select id="status">
+      <option>To Do</option>
+      <option>In Progress</option>
+      <option>Completed</option>
+    </select>
+
+    <label>Progress (%)</label>
+    <input
+      type="number"
+      id="progress"
+      min="0"
+      max="100"
+      value="0"
+    >
+
+    <label>Priority</label>
+    <select id="priority">
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+
+    <div class="modal-buttons">
+
+      <button
+        class="delete"
+        id="deleteButton"
+        onclick="deleteTask()"
+        style="display:none"
+      >
+        Delete
+      </button>
+
+      <button
+        class="cancel"
+        onclick="closeModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="save"
+        onclick="saveTask()"
+      >
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+  import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    doc,
+    updateDoc,
+    deleteDoc
+  }
+  from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+
+  /* YOUR FIREBASE */
+
+  const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyDZ3oh1Adjnz_-d5MMJj8vBSWHZQGfkx3I",
+
+    authDomain:
+    "online-journalism-asm1.firebaseapp.com",
+
+    projectId:
+    "online-journalism-asm1",
+
+    storageBucket:
+    "online-journalism-asm1.firebasestorage.app",
+
+    messagingSenderId:
+    "742635372867",
+
+    appId:
+    "1:742635372867:web:e4b0b33cc5aae5b583aff6",
+
+    measurementId:
+    "G-H88Z242G80"
+
+  };
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const db =
+    getFirestore(app);
+
+
+  const tasksCollection =
+    collection(db, "tasks");
+
+
+  let tasks = [];
+
+  let editingID = null;
+
+
+  /* REAL TIME DATABASE */
+
+  onSnapshot(tasksCollection, snapshot => {
+
+    tasks = [];
+
+    snapshot.forEach(document => {
+
+      tasks.push({
+        id: document.id,
+        ...document.data()
+      });
+
+    });
+
+    render();
+
+  });
+
+
+  /* ADD WINDOW */
+
+  window.openAddModal = function() {
+
+    editingID = null;
+
+    document.getElementById("modalTitle")
+      .innerText = "Add Task";
+
+    document.getElementById("deleteButton")
+      .style.display = "none";
+
+    clearForm();
+
+    document.getElementById("modal")
+      .style.display = "flex";
+
+  };
+
+
+  /* EDIT WINDOW */
+
+  window.editTask = function(id) {
+
+    const item =
+      tasks.find(t => t.id === id);
+
+    editingID = id;
+
+    document.getElementById("modalTitle")
+      .innerText = "Edit Task";
+
+    document.getElementById("deleteButton")
+      .style.display = "block";
+
+    document.getElementById("task").value =
+      item.task || "";
+
+    document.getElementById("department").value =
+      item.department || "";
+
+    document.getElementById("position").value =
+      item.position || "";
+
+    document.getElementById("pic").value =
+      item.pic || "";
+
+    document.getElementById("due").value =
+      item.due || "";
+
+    document.getElementById("status").value =
+      item.status || "To Do";
+
+    document.getElementById("progress").value =
+      item.progress ?? 0;
+
+    document.getElementById("priority").value =
+      item.priority || "Medium";
+
+    document.getElementById("modal")
+      .style.display = "flex";
+
+  };
+
+
+  /* SAVE */
+
+  window.saveTask = async function() {
+
+    const taskName =
+      document.getElementById("task").value.trim();
+
+    if (!taskName) {
+      alert("Please enter a task.");
+      return;
+    }
+
+    const data = {
+
+      task: taskName,
+
+      department:
+      document.getElementById("department")
+      .value.trim() || "General",
+
+      position:
+      document.getElementById("position")
+      .value.trim(),
+
+      pic:
+      document.getElementById("pic")
+      .value.trim(),
+
+      due:
+      document.getElementById("due")
+      .value,
+
+      status:
+      document.getElementById("status")
+      .value,
+
+      progress:
+      Number(
+        document.getElementById("progress")
+        .value
+      ),
+
+      priority:
+      document.getElementById("priority")
+      .value
+
+    };
+
+
+    try {
+
+      if (editingID) {
+
+        await updateDoc(
+          doc(db, "tasks", editingID),
+          data
+        );
+
+      } else {
+
+        await addDoc(
+          tasksCollection,
+          data
+        );
+
+      }
+
+      closeModal();
+
+    }
+
+    catch(error) {
+
+      console.error(error);
+
+      alert(
+        "Unable to save. Check your Firebase Firestore rules."
+      );
+
+    }
+
+  };
+
+
+  /* DELETE */
+
+  window.deleteTask = async function() {
+
+    if (!editingID) return;
+
+    if (!confirm("Delete this task?"))
+      return;
+
+    try {
+
+      await deleteDoc(
+        doc(db, "tasks", editingID)
+      );
+
+      closeModal();
+
+    }
+
+    catch(error) {
+
+      console.error(error);
+
+      alert("Unable to delete task.");
+
+    }
+
+  };
+
+
+  /* CLOSE */
+
+  window.closeModal = function() {
+
+    document.getElementById("modal")
+      .style.display = "none";
+
+    editingID = null;
+
+  };
+
+
+  function clearForm() {
+
+    document.getElementById("task").value = "";
+    document.getElementById("department").value = "";
+    document.getElementById("position").value = "";
+    document.getElementById("pic").value = "";
+    document.getElementById("due").value = "";
+    document.getElementById("status").value = "To Do";
+    document.getElementById("progress").value = 0;
+    document.getElementById("priority").value = "Medium";
+
+  }
+
+
+  /* DEADLINE */
+
+  function deadline(date, status) {
+
+    if (!date)
+      return "";
+
+    if (status === "Completed")
+      return "Completed";
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const due =
+      new Date(date + "T00:00:00");
+
+    const days =
+      Math.round(
+        (due - today) /
+        86400000
+      );
+
+
+    if (days === 0)
+      return "Due today";
+
+    if (days < 0)
+      return Math.abs(days) + "d overdue";
+
+    return "Due in " + days + "d";
+
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) return "—";
+
+    const d =
+      new Date(date + "T00:00:00");
+
+    return d.toLocaleDateString(
+      "en-GB",
+      {
+        day:"2-digit",
+        month:"2-digit"
+      }
+    );
+
+  }
+
+
+  /* DISPLAY */
+
+  function render() {
+
+    const tracker =
+      document.getElementById("tracker");
+
+    if (tasks.length === 0) {
+
+      tracker.innerHTML =
+      "<p>No tasks yet. Click <b>+ Add Task</b> to start.</p>";
+
+      return;
+
+    }
+
+
+    const departments = {};
+
+    tasks.forEach(task => {
+
+      const dept =
+        task.department || "General";
+
+      if (!departments[dept])
+        departments[dept] = [];
+
+      departments[dept].push(task);
+
+    });
+
+
+    tracker.innerHTML = "";
+
+
+    Object.keys(departments)
+    .sort()
+    .forEach(dept => {
+
+      const section =
+        document.createElement("div");
+
+      section.className =
+        "department";
+
+
+      section.innerHTML = `
+
+        <div class="department-title">
+
+          ${dept}
+
+          <span style="
+            color:#999;
+            font-weight:normal;
+            font-size:12px;
+            margin-left:6px;
+          ">
+            ${departments[dept].length} tasks
+          </span>
+
+        </div>
+
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Task</th>
+              <th>Position</th>
+              <th>PIC</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Progress</th>
+              <th>Priority</th>
+              <th></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${departments[dept]
+            .map(item => {
+
+              const deadlineText =
+                deadline(
+                  item.due,
+                  item.status
+                );
+
+
+              const deadlineClass =
+                deadlineText.includes("overdue")
+                || deadlineText === "Due today"
+                ? "overdue"
+                : "due";
+
+
+              let statusClass = "todo";
+
+              if (
+                item.status === "In Progress"
+              )
+                statusClass =
+                  "inprogress";
+
+              if (
+                item.status === "Completed"
+              )
+                statusClass =
+                  "completed";
+
+
+              const priorityClass =
+                (item.priority || "Medium")
+                .toLowerCase();
+
+
+              return `
+
+                <tr>
+
+                  <td class="task">
+                    ${escapeHTML(item.task)}
+                  </td>
+
+                  <td>
+                    ${escapeHTML(item.position || "—")}
+                  </td>
+
+                  <td>
+                    ${escapeHTML(item.pic || "—")}
+                  </td>
+
+                  <td>
+
+                    ${formatDate(item.due)}
+
+                    <div class="${deadlineClass}">
+                      ${deadlineText}
+                    </div>
+
+                  </td>
+
+                  <td>
+
+                    <span class="
+                      badge
+                      ${statusClass}
+                    ">
+                      ${item.status}
+                    </span>
+
+                  </td>
+
+                  <td>
+                    ${item.progress ?? 0}%
+                  </td>
+
+                  <td>
+
+                    <span class="
+                      badge
+                      ${priorityClass}
+                    ">
+                      ${item.priority}
+                    </span>
+
+                  </td>
+
+                  <td class="actions">
+
+                    <button
+                      onclick="editTask('${item.id}')"
+                    >
+                      ✏️
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              `;
+
+            }).join("")}
+
+          </tbody>
+
+        </table>
+
+      `;
+
+
+      tracker.appendChild(section);
+
+    });
+
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+</script>
+
+</body>
+</html>
