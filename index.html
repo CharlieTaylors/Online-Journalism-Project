@@ -19,9 +19,9 @@ body {
 }
 
 .container {
-  width: auto;
-  max-width: none;
-  margin: 30px 45px;
+  width: 94%;
+  max-width: 1250px;
+  margin: 35px auto;
 }
 
 /* HEADER */
@@ -235,16 +235,25 @@ tr:last-child td {
 
 .task-name {
   font-weight: 600;
-  margin-bottom: 4px;
+  margin: 0 0 4px 0;
+  padding: 0;
 }
+
+/* NOTE */
 
 .task-note {
   color: #929292;
   font-size: 11px;
   line-height: 1.45;
   max-width: 450px;
-  white-space: pre-wrap;
+  margin: 2px 0 0 0;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+  display: block;
 }
+
+/* DATE */
 
 .date-main {
   display: inline-block;
@@ -278,6 +287,8 @@ tr:last-child td {
   background: #e8f3ea;
   color: #4d7655;
 }
+
+/* STATUS */
 
 .status {
   display: inline-block;
@@ -508,10 +519,6 @@ label {
   gap: 10px;
 }
 
-.date-row label {
-  margin-top: 16px;
-}
-
 .modal-buttons {
   display: flex;
   gap: 9px;
@@ -553,7 +560,8 @@ label {
 @media(max-width: 750px) {
 
   .container {
-    margin: 20px 16px;
+    width: 94%;
+    margin: 20px auto;
   }
 
   .stats {
@@ -665,6 +673,7 @@ label {
       </select>
 
       <input type="date" id="fromDate" onchange="render()">
+
       <input type="date" id="toDate" onchange="render()">
 
       <button class="clear-btn" onclick="clearFilters()">
@@ -925,7 +934,6 @@ function getTaskStart(item) {
          item.due ||
          item.endDate ||
          "";
-
 }
 
 
@@ -935,7 +943,6 @@ function getTaskEnd(item) {
          item.due ||
          item.startDate ||
          "";
-
 }
 
 
@@ -1069,7 +1076,7 @@ function getSelectedPICs() {
 }
 
 
-/* LIVE FIREBASE */
+/* FIREBASE */
 
 onSnapshot(
 
@@ -1098,7 +1105,9 @@ onSnapshot(
       .getElementById("calendarView")
       .style.display !== "none"
     ) {
+
       renderCalendar();
+
     }
 
   },
@@ -1125,17 +1134,21 @@ onSnapshot(
 window.showTasksView =
 function() {
 
-  document.getElementById("tasksView")
-    .style.display = "block";
+  document
+  .getElementById("tasksView")
+  .style.display = "block";
 
-  document.getElementById("calendarView")
-    .style.display = "none";
+  document
+  .getElementById("calendarView")
+  .style.display = "none";
 
-  document.getElementById("tasksTab")
-    .classList.add("active");
+  document
+  .getElementById("tasksTab")
+  .classList.add("active");
 
-  document.getElementById("calendarTab")
-    .classList.remove("active");
+  document
+  .getElementById("calendarTab")
+  .classList.remove("active");
 
 };
 
@@ -1143,17 +1156,21 @@ function() {
 window.showCalendarView =
 function() {
 
-  document.getElementById("tasksView")
-    .style.display = "none";
+  document
+  .getElementById("tasksView")
+  .style.display = "none";
 
-  document.getElementById("calendarView")
-    .style.display = "block";
+  document
+  .getElementById("calendarView")
+  .style.display = "block";
 
-  document.getElementById("calendarTab")
-    .classList.add("active");
+  document
+  .getElementById("calendarTab")
+  .classList.add("active");
 
-  document.getElementById("tasksTab")
-    .classList.remove("active");
+  document
+  .getElementById("tasksTab")
+  .classList.remove("active");
 
   renderCalendar();
 
@@ -1176,15 +1193,19 @@ function updateStats() {
 
   tasks.forEach(item => {
 
-    if (item.status === "Completed") {
+    if (
+      item.status === "Completed"
+    ) {
 
       completed++;
       return;
 
     }
 
+
     const endDate =
       getTaskEnd(item);
+
 
     if (!endDate)
       return;
@@ -1204,29 +1225,39 @@ function updateStats() {
       );
 
 
-    if (days < 0)
+    if (days < 0) {
+
       overdue++;
 
-    else if (days <= 7)
+    }
+
+    else if (days <= 7) {
+
       dueSoon++;
+
+    }
 
   });
 
 
-  document.getElementById("totalTasks")
-    .textContent =
+  document
+  .getElementById("totalTasks")
+  .textContent =
     tasks.length;
 
-  document.getElementById("completedTasks")
-    .textContent =
+  document
+  .getElementById("completedTasks")
+  .textContent =
     completed;
 
-  document.getElementById("dueSoonTasks")
-    .textContent =
+  document
+  .getElementById("dueSoonTasks")
+  .textContent =
     dueSoon;
 
-  document.getElementById("overdueTasks")
-    .textContent =
+  document
+  .getElementById("overdueTasks")
+  .textContent =
     overdue;
 
 }
@@ -1237,10 +1268,14 @@ function updateStats() {
 function updateFilters() {
 
   const departmentSelect =
-    document.getElementById("departmentFilter");
+    document.getElementById(
+      "departmentFilter"
+    );
 
   const picSelect =
-    document.getElementById("picFilter");
+    document.getElementById(
+      "picFilter"
+    );
 
 
   const currentDept =
@@ -1288,11 +1323,25 @@ function updateFilters() {
 window.clearFilters =
 function() {
 
-  document.getElementById("departmentFilter").value = "";
-  document.getElementById("picFilter").value = "";
-  document.getElementById("statusFilter").value = "";
-  document.getElementById("fromDate").value = "";
-  document.getElementById("toDate").value = "";
+  document
+  .getElementById("departmentFilter")
+  .value = "";
+
+  document
+  .getElementById("picFilter")
+  .value = "";
+
+  document
+  .getElementById("statusFilter")
+  .value = "";
+
+  document
+  .getElementById("fromDate")
+  .value = "";
+
+  document
+  .getElementById("toDate")
+  .value = "";
 
   render();
 
@@ -1306,25 +1355,48 @@ function() {
 
   editingID = null;
 
-  document.getElementById("modalTitle")
-    .textContent =
+  document
+  .getElementById("modalTitle")
+  .textContent =
     "Add Task";
 
-  document.getElementById("deleteButton")
-    .style.display =
+  document
+  .getElementById("deleteButton")
+  .style.display =
     "none";
 
-  document.getElementById("department").value = "";
-  document.getElementById("task").value = "";
-  document.getElementById("note").value = "";
-  document.getElementById("startDate").value = "";
-  document.getElementById("endDate").value = "";
-  document.getElementById("status").value = "Not Started";
+  document
+  .getElementById("department")
+  .value = "";
+
+  document
+  .getElementById("task")
+  .value = "";
+
+  document
+  .getElementById("note")
+  .value = "";
+
+  document
+  .getElementById("startDate")
+  .value = "";
+
+  document
+  .getElementById("endDate")
+  .value = "";
+
+  document
+  .getElementById("status")
+  .value =
+    "Not Started";
+
 
   renderPICCheckboxes([]);
 
-  document.getElementById("modal")
-    .style.display =
+
+  document
+  .getElementById("modal")
+  .style.display =
     "flex";
 
 };
@@ -1336,14 +1408,26 @@ window.syncEndDate =
 function() {
 
   const start =
-    document.getElementById("startDate").value;
+    document
+    .getElementById("startDate")
+    .value;
 
   const end =
-    document.getElementById("endDate").value;
+    document
+    .getElementById("endDate")
+    .value;
 
-  if (start && !end) {
-    document.getElementById("endDate").value =
+
+  if (
+    start &&
+    !end
+  ) {
+
+    document
+    .getElementById("endDate")
+    .value =
       start;
+
   }
 
 };
@@ -1360,6 +1444,7 @@ function(id) {
       task.id === id
     );
 
+
   if (!item)
     return;
 
@@ -1367,46 +1452,65 @@ function(id) {
   editingID = id;
 
 
-  document.getElementById("modalTitle")
-    .textContent =
+  document
+  .getElementById("modalTitle")
+  .textContent =
     "Edit Task";
 
-  document.getElementById("deleteButton")
-    .style.display =
+
+  document
+  .getElementById("deleteButton")
+  .style.display =
     "block";
 
-  document.getElementById("department")
-    .value =
+
+  document
+  .getElementById("department")
+  .value =
     item.department || "";
 
-  document.getElementById("task")
-    .value =
+
+  document
+  .getElementById("task")
+  .value =
     item.task || "";
 
-  document.getElementById("note")
-    .value =
+
+  document
+  .getElementById("note")
+  .value =
     item.note || "";
 
-  document.getElementById("startDate")
-    .value =
+
+  document
+  .getElementById("startDate")
+  .value =
     getTaskStart(item);
 
-  document.getElementById("endDate")
-    .value =
+
+  document
+  .getElementById("endDate")
+  .value =
     getTaskEnd(item);
 
-  document.getElementById("status")
-    .value =
-    item.status || "Not Started";
+
+  document
+  .getElementById("status")
+  .value =
+    item.status ||
+    "Not Started";
 
 
   renderPICCheckboxes(
-    normalisePICs(item.pic)
+    normalisePICs(
+      item.pic
+    )
   );
 
 
-  document.getElementById("modal")
-    .style.display =
+  document
+  .getElementById("modal")
+  .style.display =
     "flex";
 
 };
@@ -1418,36 +1522,54 @@ window.saveTask =
 async function() {
 
   const department =
-    document.getElementById("department")
-    .value.trim();
+    document
+    .getElementById("department")
+    .value
+    .trim();
+
 
   const task =
-    document.getElementById("task")
-    .value.trim();
+    document
+    .getElementById("task")
+    .value
+    .trim();
+
 
   const note =
-    document.getElementById("note")
-    .value.trim();
+    document
+    .getElementById("note")
+    .value
+    .trim();
+
 
   const pic =
     getSelectedPICs();
 
+
   const startDate =
-    document.getElementById("startDate")
+    document
+    .getElementById("startDate")
     .value;
+
 
   let endDate =
-    document.getElementById("endDate")
+    document
+    .getElementById("endDate")
     .value;
 
+
   const status =
-    document.getElementById("status")
+    document
+    .getElementById("status")
     .value;
 
 
   if (!department) {
 
-    alert("Please enter a department.");
+    alert(
+      "Please enter a department."
+    );
+
     return;
 
   }
@@ -1455,14 +1577,24 @@ async function() {
 
   if (!task) {
 
-    alert("Please enter a task.");
+    alert(
+      "Please enter a task."
+    );
+
     return;
 
   }
 
 
-  if (startDate && !endDate)
-    endDate = startDate;
+  if (
+    startDate &&
+    !endDate
+  ) {
+
+    endDate =
+      startDate;
+
+  }
 
 
   if (
@@ -1481,6 +1613,7 @@ async function() {
 
 
   const data = {
+
     department,
     task,
     note,
@@ -1489,6 +1622,7 @@ async function() {
     endDate,
     due: endDate,
     status
+
   };
 
 
@@ -1515,9 +1649,13 @@ async function() {
       data.createdAt =
         serverTimestamp();
 
+
       await addDoc(
+
         tasksCollection,
+
         data
+
       );
 
     }
@@ -1531,7 +1669,9 @@ async function() {
 
     console.error(error);
 
-    alert("Unable to save task.");
+    alert(
+      "Unable to save task."
+    );
 
   }
 
@@ -1547,7 +1687,11 @@ async function() {
     return;
 
 
-  if (!confirm("Delete this task?"))
+  if (
+    !confirm(
+      "Delete this task?"
+    )
+  )
     return;
 
 
@@ -1563,6 +1707,7 @@ async function() {
 
     );
 
+
     closeModal();
 
   }
@@ -1571,7 +1716,9 @@ async function() {
 
     console.error(error);
 
-    alert("Unable to delete task.");
+    alert(
+      "Unable to delete task."
+    );
 
   }
 
@@ -1583,8 +1730,9 @@ async function() {
 window.closeModal =
 function() {
 
-  document.getElementById("modal")
-    .style.display =
+  document
+  .getElementById("modal")
+  .style.display =
     "none";
 
   editingID = null;
@@ -1592,40 +1740,59 @@ function() {
 };
 
 
-document.getElementById("modal")
+document
+.getElementById("modal")
 .addEventListener(
   "click",
   function(event) {
 
-    if (event.target === this)
+    if (
+      event.target === this
+    ) {
+
       closeModal();
+
+    }
 
   }
 );
 
 
-/* DATE HELPERS */
+/* DEADLINE */
 
-function getDeadline(endDate,status) {
+function getDeadline(
+  endDate,
+  status
+) {
 
-  if (!endDate)
+  if (!endDate) {
+
     return {
       text:"",
       className:""
     };
 
+  }
 
-  if (status === "Completed")
+
+  if (
+    status === "Completed"
+  ) {
+
     return {
       text:"Completed",
       className:"done-date"
     };
 
+  }
+
 
   const today =
     new Date();
 
-  today.setHours(0,0,0,0);
+  today.setHours(
+    0,0,0,0
+  );
 
 
   const due =
@@ -1642,39 +1809,67 @@ function getDeadline(endDate,status) {
     );
 
 
-  if (days < 0)
+  if (days < 0) {
+
     return {
       text:
-      "⚠ " +
-      Math.abs(days) +
-      "d overdue",
-      className:"overdue"
+        "⚠ " +
+        Math.abs(days) +
+        "d overdue",
+
+      className:
+        "overdue"
     };
 
+  }
 
-  if (days === 0)
+
+  if (days === 0) {
+
     return {
-      text:"⚠ Due today",
-      className:"overdue"
+      text:
+        "⚠ Due today",
+
+      className:
+        "overdue"
     };
 
+  }
 
-  if (days <= 7)
+
+  if (days <= 7) {
+
     return {
-      text:"Due in " + days + "d",
-      className:"due-soon"
+      text:
+        "Due in " +
+        days +
+        "d",
+
+      className:
+        "due-soon"
     };
+
+  }
 
 
   return {
-    text:"Due in " + days + "d",
-    className:"due-normal"
+    text:
+      "Due in " +
+      days +
+      "d",
+
+    className:
+      "due-normal"
   };
 
 }
 
 
-function formatSingleDate(dateString) {
+/* DATE DISPLAY */
+
+function formatSingleDate(
+  dateString
+) {
 
   if (!dateString)
     return "—";
@@ -1687,7 +1882,8 @@ function formatSingleDate(dateString) {
     );
 
 
-  return date.toLocaleDateString(
+  return date
+  .toLocaleDateString(
     "en-GB",
     {
       day:"2-digit",
@@ -1719,8 +1915,13 @@ function formatDateRange(item) {
     return formatSingleDate(start);
 
 
-  if (start === end)
+  if (
+    start === end
+  ) {
+
     return formatSingleDate(start);
+
+  }
 
 
   return (
@@ -1731,6 +1932,8 @@ function formatDateRange(item) {
 
 }
 
+
+/* CALENDAR DATE RANGE */
 
 function dateFallsInTask(
   dateString,
@@ -1744,7 +1947,10 @@ function dateFallsInTask(
     getTaskEnd(item);
 
 
-  if (!start && !end)
+  if (
+    !start &&
+    !end
+  )
     return false;
 
 
@@ -1763,13 +1969,21 @@ function dateFallsInTask(
 }
 
 
+/* STATUS */
+
 function statusClass(status) {
 
-  if (status === "Completed")
+  if (
+    status === "Completed"
+  )
     return "completed";
 
-  if (status === "In Progress")
+
+  if (
+    status === "In Progress"
+  )
     return "in-progress";
+
 
   return "not-started";
 
@@ -1784,45 +1998,67 @@ function(id) {
   const content =
     document.getElementById(id);
 
+
   content.style.display =
-    content.style.display === "none"
+
+    content.style.display ===
+    "none"
+
     ? "block"
+
     : "none";
 
 };
 
 
-/* RENDER TASKS */
+/* TASK RENDER */
 
 window.render =
 function() {
 
   const tracker =
-    document.getElementById("tracker");
+    document
+    .getElementById("tracker");
 
 
   const departmentFilter =
-    document.getElementById("departmentFilter").value;
+    document
+    .getElementById("departmentFilter")
+    .value;
+
 
   const picFilter =
-    document.getElementById("picFilter").value;
+    document
+    .getElementById("picFilter")
+    .value;
+
 
   const statusFilter =
-    document.getElementById("statusFilter").value;
+    document
+    .getElementById("statusFilter")
+    .value;
+
 
   const fromDate =
-    document.getElementById("fromDate").value;
+    document
+    .getElementById("fromDate")
+    .value;
+
 
   const toDate =
-    document.getElementById("toDate").value;
+    document
+    .getElementById("toDate")
+    .value;
 
 
   let filtered =
     tasks.filter(item => {
 
+
       if (
         departmentFilter &&
-        item.department !== departmentFilter
+        item.department !==
+        departmentFilter
       )
         return false;
 
@@ -1830,9 +2066,16 @@ function() {
       if (picFilter) {
 
         const pics =
-          normalisePICs(item.pic);
+          normalisePICs(
+            item.pic
+          );
 
-        if (!pics.includes(picFilter))
+
+        if (
+          !pics.includes(
+            picFilter
+          )
+        )
           return false;
 
       }
@@ -1840,7 +2083,8 @@ function() {
 
       if (
         statusFilter &&
-        item.status !== statusFilter
+        item.status !==
+        statusFilter
       )
         return false;
 
@@ -1873,37 +2117,53 @@ function() {
     });
 
 
-  document.getElementById("filterCount")
-    .textContent =
+  document
+  .getElementById("filterCount")
+  .textContent =
+
     filtered.length +
     " of " +
     tasks.length +
     " tasks shown";
 
 
-  filtered.sort((a,b) => {
+  filtered.sort(
+    (a,b) => {
 
-    const aStart =
-      getTaskStart(a);
+      const aStart =
+        getTaskStart(a);
 
-    const bStart =
-      getTaskStart(b);
-
-    if (!aStart && !bStart)
-      return 0;
-
-    if (!aStart)
-      return 1;
-
-    if (!bStart)
-      return -1;
-
-    return aStart.localeCompare(bStart);
-
-  });
+      const bStart =
+        getTaskStart(b);
 
 
-  if (!filtered.length) {
+      if (
+        !aStart &&
+        !bStart
+      )
+        return 0;
+
+
+      if (!aStart)
+        return 1;
+
+
+      if (!bStart)
+        return -1;
+
+
+      return aStart
+      .localeCompare(
+        bStart
+      );
+
+    }
+  );
+
+
+  if (
+    !filtered.length
+  ) {
 
     tracker.innerHTML = `
       <div class="empty">
@@ -1922,224 +2182,302 @@ function() {
   filtered.forEach(item => {
 
     const department =
-      item.department || "General";
+      item.department ||
+      "General";
 
-    if (!departments[department])
-      departments[department] = [];
 
-    departments[department].push(item);
+    if (
+      !departments[
+        department
+      ]
+    ) {
+
+      departments[
+        department
+      ] = [];
+
+    }
+
+
+    departments[
+      department
+    ].push(item);
 
   });
 
 
-  tracker.innerHTML = "";
+  tracker.innerHTML =
+    "";
 
 
-  Object.keys(departments)
-  .forEach((department,index) => {
-
-    const sectionTasks =
-      departments[department];
-
-    const completed =
-      sectionTasks.filter(
-        task =>
-        task.status === "Completed"
-      ).length;
-
-    const percentage =
-      Math.round(
-        completed /
-        sectionTasks.length *
-        100
-      );
-
-    const id =
-      "section-" + index;
-
-    const section =
-      document.createElement("div");
-
-    section.className =
-      "section";
+  Object
+  .keys(departments)
+  .forEach(
+    (department,index) => {
 
 
-    section.innerHTML = `
+      const sectionTasks =
+        departments[
+          department
+        ];
 
-      <div
-        class="section-header"
-        onclick="toggleSection('${id}')"
-      >
 
-        <div class="section-title-area">
+      const completed =
+        sectionTasks
+        .filter(
+          task =>
+          task.status ===
+          "Completed"
+        )
+        .length;
 
-          <span class="arrow">▾</span>
 
-          <span class="section-title">
-            ${escapeHTML(department)}
-          </span>
+      const percentage =
+        Math.round(
+          completed /
+          sectionTasks.length *
+          100
+        );
 
-          <span class="task-count">
-            ${sectionTasks.length} tasks
-          </span>
+
+      const id =
+        "section-" +
+        index;
+
+
+      const section =
+        document
+        .createElement("div");
+
+
+      section.className =
+        "section";
+
+
+      section.innerHTML = `
+
+        <div
+          class="section-header"
+          onclick="toggleSection('${id}')"
+        >
+
+          <div class="section-title-area">
+
+            <span class="arrow">
+              ▾
+            </span>
+
+            <span class="section-title">
+              ${escapeHTML(department)}
+            </span>
+
+            <span class="task-count">
+              ${sectionTasks.length}
+              tasks
+            </span>
+
+          </div>
+
+          <div class="section-progress">
+            ${percentage}%
+          </div>
 
         </div>
 
-        <div class="section-progress">
-          ${percentage}%
-        </div>
 
-      </div>
+        <div
+          class="section-content"
+          id="${id}"
+        >
 
+          <table>
 
-      <div
-        class="section-content"
-        id="${id}"
-      >
-
-        <table>
-
-          <thead>
-            <tr>
-              <th style="width:40%">TASK</th>
-              <th style="width:22%">PIC</th>
-              <th style="width:22%">DATES</th>
-              <th style="width:13%">STATUS</th>
-              <th></th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-          ${sectionTasks.map(item => {
-
-            const endDate =
-              getTaskEnd(item);
-
-            const deadline =
-              getDeadline(
-                endDate,
-                item.status
-              );
-
-            return `
+            <thead>
 
               <tr>
 
-                <td>
+                <th style="width:40%">
+                  TASK
+                </th>
 
-                  <div class="task-name">
-                    ${escapeHTML(item.task)}
-                  </div>
+                <th style="width:22%">
+                  PIC
+                </th>
 
-                  ${
-                    item.note
-                    ?
-                    `
-                    <div class="task-note">
-                      ${escapeHTML(item.note)}
-                    </div>
-                    `
-                    :
-                    ""
-                  }
+                <th style="width:22%">
+                  DATES
+                </th>
 
-                </td>
+                <th style="width:13%">
+                  STATUS
+                </th>
 
-
-                <td>
-                  ${escapeHTML(
-                    displayPICs(item.pic)
-                  )}
-                </td>
-
-
-                <td>
-
-                  <span class="date-main">
-                    ${formatDateRange(item)}
-                  </span>
-
-                  ${
-                    deadline.text
-                    ?
-                    `
-                    <span
-                      class="
-                        deadline-badge
-                        ${deadline.className}
-                      "
-                    >
-                      ${escapeHTML(deadline.text)}
-                    </span>
-                    `
-                    :
-                    ""
-                  }
-
-                </td>
-
-
-                <td>
-
-                  <span
-                    class="
-                      status
-                      ${statusClass(item.status)}
-                    "
-                  >
-                    ${escapeHTML(
-                      item.status || "Not Started"
-                    )}
-                  </span>
-
-                </td>
-
-
-                <td>
-
-                  <button
-                    class="edit-btn"
-                    onclick="editTask('${item.id}')"
-                  >
-                    ✎
-                  </button>
-
-                </td>
+                <th></th>
 
               </tr>
 
-            `;
-
-          }).join("")}
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    `;
+            </thead>
 
 
-    tracker.appendChild(section);
+            <tbody>
 
-  });
+            ${
+              sectionTasks
+              .map(item => {
+
+
+                const endDate =
+                  getTaskEnd(item);
+
+
+                const deadline =
+                  getDeadline(
+                    endDate,
+                    item.status
+                  );
+
+
+                return `
+
+                  <tr>
+
+                    <td>
+
+                      <div class="task-name">
+                        ${escapeHTML(
+                          item.task
+                        )}
+                      </div>
+
+                      ${
+                        item.note
+                        ?
+                        `<div class="task-note">${escapeHTML(item.note)}</div>`
+                        :
+                        ""
+                      }
+
+                    </td>
+
+
+                    <td>
+
+                      ${escapeHTML(
+                        displayPICs(
+                          item.pic
+                        )
+                      )}
+
+                    </td>
+
+
+                    <td>
+
+                      <span class="date-main">
+
+                        ${formatDateRange(
+                          item
+                        )}
+
+                      </span>
+
+
+                      ${
+                        deadline.text
+                        ?
+                        `
+                          <span
+                            class="
+                              deadline-badge
+                              ${deadline.className}
+                            "
+                          >
+                            ${escapeHTML(
+                              deadline.text
+                            )}
+                          </span>
+                        `
+                        :
+                        ""
+                      }
+
+                    </td>
+
+
+                    <td>
+
+                      <span
+                        class="
+                          status
+                          ${statusClass(
+                            item.status
+                          )}
+                        "
+                      >
+
+                        ${escapeHTML(
+                          item.status ||
+                          "Not Started"
+                        )}
+
+                      </span>
+
+                    </td>
+
+
+                    <td>
+
+                      <button
+                        class="edit-btn"
+                        onclick="editTask('${item.id}')"
+                      >
+                        ✎
+                      </button>
+
+                    </td>
+
+                  </tr>
+
+                `;
+
+              })
+              .join("")
+            }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      `;
+
+
+      tracker
+      .appendChild(
+        section
+      );
+
+    }
+  );
 
 };
 
 
-/* CALENDAR DEPARTMENT */
+/* CALENDAR FILTER */
 
 function updateCalendarDepartmentFilter() {
 
   const select =
-    document.getElementById(
+    document
+    .getElementById(
       "calendarDepartmentFilter"
     );
 
+
   const current =
     select.value;
+
 
   const departments =
     [...new Set(
@@ -2150,9 +2488,16 @@ function updateCalendarDepartmentFilter() {
 
 
   select.innerHTML =
-    `<option value="">All Departments</option>` +
+
+    `<option value="">
+      All Departments
+    </option>`
+
+    +
+
     departments
-    .map(d =>
+    .map(
+      d =>
       `<option value="${escapeHTML(d)}">${escapeHTML(d)}</option>`
     )
     .join("");
@@ -2172,9 +2517,11 @@ function(amount) {
   calendarDate =
     new Date(
       calendarDate.getFullYear(),
-      calendarDate.getMonth() + amount,
+      calendarDate.getMonth() +
+      amount,
       1
     );
+
 
   renderCalendar();
 
@@ -2187,6 +2534,7 @@ function() {
   calendarDate =
     new Date();
 
+
   renderCalendar();
 
 };
@@ -2198,26 +2546,40 @@ window.renderCalendar =
 function() {
 
   const grid =
-    document.getElementById("calendarGrid");
+    document
+    .getElementById(
+      "calendarGrid"
+    );
+
 
   const title =
-    document.getElementById("calendarMonth");
+    document
+    .getElementById(
+      "calendarMonth"
+    );
+
 
   const filter =
-    document.getElementById(
+    document
+    .getElementById(
       "calendarDepartmentFilter"
-    ).value;
+    )
+    .value;
 
 
   const year =
-    calendarDate.getFullYear();
+    calendarDate
+    .getFullYear();
+
 
   const month =
-    calendarDate.getMonth();
+    calendarDate
+    .getMonth();
 
 
   title.textContent =
-    calendarDate.toLocaleDateString(
+    calendarDate
+    .toLocaleDateString(
       "en-US",
       {
         month:"long",
@@ -2227,14 +2589,25 @@ function() {
 
 
   const firstDay =
-    new Date(year,month,1);
+    new Date(
+      year,
+      month,
+      1
+    );
+
 
   const lastDay =
-    new Date(year,month+1,0);
+    new Date(
+      year,
+      month + 1,
+      0
+    );
 
 
   let startDay =
-    firstDay.getDay();
+    firstDay
+    .getDay();
+
 
   startDay =
     startDay === 0
@@ -2243,10 +2616,12 @@ function() {
 
 
   const daysInMonth =
-    lastDay.getDate();
+    lastDay
+    .getDate();
 
 
-  grid.innerHTML = "";
+  grid.innerHTML =
+    "";
 
 
   for (
@@ -2256,12 +2631,18 @@ function() {
   ) {
 
     const empty =
-      document.createElement("div");
+      document
+      .createElement("div");
+
 
     empty.className =
       "calendar-cell calendar-empty";
 
-    grid.appendChild(empty);
+
+    grid
+    .appendChild(
+      empty
+    );
 
   }
 
@@ -2269,12 +2650,20 @@ function() {
   const today =
     new Date();
 
+
   const todayString =
+
     `${today.getFullYear()}-${String(
-      today.getMonth()+1
-    ).padStart(2,"0")}-${String(
+      today.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    )}-${String(
       today.getDate()
-    ).padStart(2,"0")}`;
+    ).padStart(
+      2,
+      "0"
+    )}`;
 
 
   for (
@@ -2283,104 +2672,156 @@ function() {
     day++
   ) {
 
+
     const cell =
-      document.createElement("div");
+      document
+      .createElement("div");
+
 
     cell.className =
       "calendar-cell";
 
 
     const dateString =
+
       `${year}-${String(
-        month+1
-      ).padStart(2,"0")}-${String(
+        month + 1
+      ).padStart(
+        2,
+        "0"
+      )}-${String(
         day
-      ).padStart(2,"0")}`;
+      ).padStart(
+        2,
+        "0"
+      )}`;
 
 
-    if (dateString === todayString)
-      cell.classList.add(
+    if (
+      dateString ===
+      todayString
+    ) {
+
+      cell
+      .classList
+      .add(
         "calendar-today"
       );
 
+    }
+
 
     cell.innerHTML =
+
       `<div class="calendar-date">
         ${day}
       </div>`;
 
 
     const dayTasks =
-      tasks.filter(task => {
+      tasks.filter(
+        task => {
 
-        if (
-          !dateFallsInTask(
-            dateString,
-            task
+
+          if (
+            !dateFallsInTask(
+              dateString,
+              task
+            )
           )
-        )
-          return false;
+            return false;
 
 
-        if (
-          filter &&
-          task.department !== filter
-        )
-          return false;
+          if (
+            filter &&
+            task.department !==
+            filter
+          )
+            return false;
 
 
-        return true;
+          return true;
 
-      });
-
-
-    dayTasks.forEach(task => {
-
-      const taskBox =
-        document.createElement("div");
-
-      taskBox.className =
-        "calendar-task " +
-        statusClass(task.status);
-
-
-      const pics =
-        normalisePICs(task.pic)
-        .join(", ");
-
-
-      taskBox.innerHTML = `
-
-        <strong>
-          ${escapeHTML(task.task)}
-        </strong>
-
-        ${
-          pics
-          ?
-          `
-          <br>
-          <span class="calendar-task-pic">
-            ${escapeHTML(pics)}
-          </span>
-          `
-          :
-          ""
         }
-
-      `;
-
-
-      taskBox.onclick =
-        () => editTask(task.id);
+      );
 
 
-      cell.appendChild(taskBox);
+    dayTasks
+    .forEach(
+      task => {
 
-    });
+
+        const taskBox =
+          document
+          .createElement(
+            "div"
+          );
 
 
-    grid.appendChild(cell);
+        taskBox.className =
+
+          "calendar-task " +
+          statusClass(
+            task.status
+          );
+
+
+        const pics =
+          normalisePICs(
+            task.pic
+          )
+          .join(", ");
+
+
+        taskBox.innerHTML = `
+
+          <strong>
+            ${escapeHTML(
+              task.task
+            )}
+          </strong>
+
+          ${
+            pics
+            ?
+            `
+              <br>
+
+              <span
+                class="calendar-task-pic"
+              >
+                ${escapeHTML(
+                  pics
+                )}
+              </span>
+            `
+            :
+            ""
+          }
+
+        `;
+
+
+        taskBox.onclick =
+          () =>
+          editTask(
+            task.id
+          );
+
+
+        cell
+        .appendChild(
+          taskBox
+        );
+
+      }
+    );
+
+
+    grid
+    .appendChild(
+      cell
+    );
 
   }
 
