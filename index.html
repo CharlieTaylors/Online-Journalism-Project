@@ -24,6 +24,8 @@ body {
   margin: 35px auto;
 }
 
+/* HEADER */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -53,6 +55,8 @@ body {
   font-weight: 600;
 }
 
+/* TABS */
+
 .view-tabs {
   display: flex;
   gap: 25px;
@@ -74,6 +78,8 @@ body {
   color: #222;
   border-bottom: 2px solid #222;
 }
+
+/* STATS */
 
 .stats {
   display: grid;
@@ -114,6 +120,8 @@ body {
   color: #c65959;
 }
 
+/* FILTER */
+
 .filters {
   background: white;
   border: 1px solid #ececec;
@@ -143,7 +151,6 @@ body {
   padding: 8px 13px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
 }
 
 .filter-count {
@@ -151,6 +158,8 @@ body {
   color: #999;
   font-size: 11px;
 }
+
+/* SECTIONS */
 
 .section {
   background: white;
@@ -175,29 +184,27 @@ body {
   gap: 8px;
 }
 
-.arrow {
-  font-size: 12px;
-  color: #777;
-}
-
 .section-title {
   font-size: 14px;
   font-weight: 600;
 }
 
-.task-count {
+.task-count,
+.section-progress {
   font-size: 11px;
   color: #999;
 }
 
-.section-progress {
-  font-size: 11px;
-  color: #888;
+.arrow {
+  font-size: 12px;
+  color: #777;
 }
 
 .section-content {
   overflow-x: auto;
 }
+
+/* TABLE */
 
 table {
   width: 100%;
@@ -211,7 +218,6 @@ th {
   font-size: 10px;
   letter-spacing: 1px;
   color: #8b8b8b;
-  font-weight: 600;
   border-bottom: 1px solid #eee;
 }
 
@@ -219,6 +225,7 @@ td {
   padding: 14px 18px;
   border-bottom: 1px solid #f0f0f0;
   font-size: 13px;
+  vertical-align: top;
 }
 
 tr:last-child td {
@@ -227,13 +234,20 @@ tr:last-child td {
 
 .task-name {
   font-weight: 600;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
-.task-label {
-  color: #aaa;
-  font-size: 10px;
+/* NOTE */
+
+.task-note {
+  color: #929292;
+  font-size: 11px;
+  line-height: 1.45;
+  max-width: 390px;
+  white-space: pre-wrap;
 }
+
+/* DATE */
 
 .date-main {
   display: inline-block;
@@ -268,6 +282,8 @@ tr:last-child td {
   color: #4d7655;
 }
 
+/* STATUS */
+
 .status {
   display: inline-block;
   padding: 5px 10px;
@@ -299,6 +315,8 @@ tr:last-child td {
   font-size: 16px;
 }
 
+/* PIC CHECKBOX */
+
 .pic-checkbox-box {
   border: 1px solid #ddd;
   border-radius: 7px;
@@ -327,6 +345,8 @@ tr:last-child td {
   border-bottom: 1px solid #eee;
   font-weight: 600;
 }
+
+/* CALENDAR */
 
 .calendar-toolbar {
   display: flex;
@@ -373,7 +393,6 @@ tr:last-child td {
   padding: 10px;
   text-align: center;
   font-size: 11px;
-  font-weight: 600;
 }
 
 .calendar-cell {
@@ -438,6 +457,8 @@ tr:last-child td {
   background: #fafafa;
 }
 
+/* MODAL */
+
 .modal {
   position: fixed;
   inset: 0;
@@ -472,11 +493,18 @@ label {
 }
 
 .modal-box input,
-.modal-box select {
+.modal-box select,
+.modal-box textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
+  font-family: inherit;
+}
+
+.modal-box textarea {
+  min-height: 75px;
+  resize: vertical;
 }
 
 .modal-buttons {
@@ -525,10 +553,6 @@ label {
     font-size: 22px;
   }
 
-  .filters {
-    align-items: stretch;
-  }
-
   .filters select,
   .filters input {
     width: calc(50% - 5px);
@@ -558,6 +582,7 @@ label {
     </button>
   </div>
 
+
   <div class="view-tabs">
 
     <button
@@ -577,6 +602,7 @@ label {
     </button>
 
   </div>
+
 
   <div id="tasksView">
 
@@ -603,6 +629,7 @@ label {
       </div>
 
     </div>
+
 
     <div class="filters">
 
@@ -637,6 +664,7 @@ label {
     </div>
 
   </div>
+
 
   <div id="calendarView" style="display:none">
 
@@ -683,25 +711,36 @@ label {
 
 </div>
 
+
+<!-- ADD / EDIT MODAL -->
+
 <div class="modal" id="modal">
 
   <div class="modal-box">
 
     <h2 id="modalTitle">Add Task</h2>
 
-    <label>Department / Section</label>
 
+    <label>Department / Section</label>
     <input
       id="department"
-      placeholder="e.g. Writing"
+      placeholder="e.g. Due Date"
     >
+
 
     <label>Task</label>
-
     <input
       id="task"
-      placeholder="Task name"
+      placeholder="e.g. Group Consultation - 12pm"
     >
+
+
+    <label>Note</label>
+    <textarea
+      id="note"
+      placeholder="Add details or reminders..."
+    ></textarea>
+
 
     <label>PIC</label>
 
@@ -710,12 +749,10 @@ label {
       class="pic-checkbox-box"
     ></div>
 
-    <label>Date</label>
 
-    <input
-      type="date"
-      id="due"
-    >
+    <label>Date</label>
+    <input type="date" id="due">
+
 
     <label>Status</label>
 
@@ -724,6 +761,7 @@ label {
       <option value="In Progress">In Progress</option>
       <option value="Completed">Completed</option>
     </select>
+
 
     <div class="modal-buttons">
 
@@ -756,12 +794,14 @@ label {
 
 </div>
 
+
 <script type="module">
 
 import {
   initializeApp
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
 
 import {
   getFirestore,
@@ -786,11 +826,16 @@ const firebaseConfig = {
   measurementId: "G-H88Z242G80"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
 
 const tasksCollection =
   collection(db, "tasks");
+
 
 let tasks = [];
 let editingID = null;
@@ -815,23 +860,22 @@ const PIC_LIST = [
 function escapeHTML(value) {
 
   return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 
 function normalisePICs(pic) {
 
-  if (Array.isArray(pic)) {
+  if (Array.isArray(pic))
     return pic;
-  }
 
   return (pic || "")
     .split(",")
-    .map(name => name.trim())
+    .map(x => x.trim())
     .filter(Boolean);
 }
 
@@ -852,9 +896,7 @@ function displayPICs(pic) {
 function renderPICCheckboxes(selectedPICs = []) {
 
   const box =
-    document.getElementById(
-      "picCheckboxes"
-    );
+    document.getElementById("picCheckboxes");
 
   box.innerHTML = "";
 
@@ -866,10 +908,7 @@ function renderPICCheckboxes(selectedPICs = []) {
     "pic-checkbox-item pic-all";
 
   allRow.innerHTML = `
-    <input
-      type="checkbox"
-      id="picAll"
-    >
+    <input type="checkbox" id="picAll">
     All
   `;
 
@@ -894,18 +933,15 @@ function renderPICCheckboxes(selectedPICs = []) {
     `;
 
     box.appendChild(row);
+
   });
 
 
   const allCheckbox =
-    document.getElementById(
-      "picAll"
-    );
+    document.getElementById("picAll");
 
   const people =
-    [...document.querySelectorAll(
-      ".pic-person"
-    )];
+    [...document.querySelectorAll(".pic-person")];
 
 
   people.forEach(checkbox => {
@@ -925,29 +961,25 @@ function renderPICCheckboxes(selectedPICs = []) {
     "change",
     function() {
 
-      people.forEach(
-        checkbox => {
+      people.forEach(checkbox => {
 
-          checkbox.checked =
-            allCheckbox.checked;
+        checkbox.checked =
+          allCheckbox.checked;
 
-        }
-      );
+      });
 
     }
   );
 
 
-  people.forEach(
-    checkbox => {
+  people.forEach(checkbox => {
 
-      checkbox.addEventListener(
-        "change",
-        updateAllCheckbox
-      );
+    checkbox.addEventListener(
+      "change",
+      updateAllCheckbox
+    );
 
-    }
-  );
+  });
 
 }
 
@@ -955,26 +987,21 @@ function renderPICCheckboxes(selectedPICs = []) {
 function updateAllCheckbox() {
 
   const allCheckbox =
-    document.getElementById(
-      "picAll"
-    );
+    document.getElementById("picAll");
 
   const people =
-    [...document.querySelectorAll(
-      ".pic-person"
-    )];
+    [...document.querySelectorAll(".pic-person")];
 
 
-  if (!allCheckbox) {
+  if (!allCheckbox)
     return;
-  }
 
 
   allCheckbox.checked =
     people.length > 0 &&
     people.every(
       checkbox =>
-        checkbox.checked
+      checkbox.checked
     );
 
 }
@@ -986,15 +1013,16 @@ function getSelectedPICs() {
     ...document.querySelectorAll(
       ".pic-person:checked"
     )
-  ].map(
+  ]
+  .map(
     checkbox =>
-      checkbox.value
+    checkbox.value
   );
 
 }
 
 
-/* FIREBASE LIVE SYNC */
+/* LIVE FIREBASE */
 
 onSnapshot(
 
@@ -1020,9 +1048,7 @@ onSnapshot(
 
     if (
       document
-      .getElementById(
-        "calendarView"
-      )
+      .getElementById("calendarView")
       .style.display !== "none"
     ) {
       renderCalendar();
@@ -1035,13 +1061,13 @@ onSnapshot(
     console.error(error);
 
     document
-      .getElementById("tracker")
-      .innerHTML = `
-        <div class="empty">
-          Unable to load tasks.
-          Please check Firestore permissions.
-        </div>
-      `;
+    .getElementById("tracker")
+    .innerHTML = `
+      <div class="empty">
+        Unable to load tasks.
+      </div>
+    `;
+
   }
 
 );
@@ -1052,20 +1078,16 @@ onSnapshot(
 window.showTasksView =
 function() {
 
-  document
-    .getElementById("tasksView")
+  document.getElementById("tasksView")
     .style.display = "block";
 
-  document
-    .getElementById("calendarView")
+  document.getElementById("calendarView")
     .style.display = "none";
 
-  document
-    .getElementById("tasksTab")
+  document.getElementById("tasksTab")
     .classList.add("active");
 
-  document
-    .getElementById("calendarTab")
+  document.getElementById("calendarTab")
     .classList.remove("active");
 
 };
@@ -1074,20 +1096,16 @@ function() {
 window.showCalendarView =
 function() {
 
-  document
-    .getElementById("tasksView")
+  document.getElementById("tasksView")
     .style.display = "none";
 
-  document
-    .getElementById("calendarView")
+  document.getElementById("calendarView")
     .style.display = "block";
 
-  document
-    .getElementById("calendarTab")
+  document.getElementById("calendarTab")
     .classList.add("active");
 
-  document
-    .getElementById("tasksTab")
+  document.getElementById("tasksTab")
     .classList.remove("active");
 
   renderCalendar();
@@ -1106,26 +1124,20 @@ function updateStats() {
   const today =
     new Date();
 
-  today.setHours(
-    0,0,0,0
-  );
+  today.setHours(0,0,0,0);
 
 
   tasks.forEach(item => {
 
-    if (
-      item.status ===
-      "Completed"
-    ) {
+    if (item.status === "Completed") {
 
       completed++;
       return;
+
     }
 
-
-    if (!item.due) {
+    if (!item.due)
       return;
-    }
 
 
     const due =
@@ -1142,133 +1154,87 @@ function updateStats() {
       );
 
 
-    if (days < 0) {
-
+    if (days < 0)
       overdue++;
 
-    } else if (
-      days <= 7
-    ) {
-
+    else if (days <= 7)
       dueSoon++;
-
-    }
 
   });
 
 
-  document
-    .getElementById("totalTasks")
+  document.getElementById("totalTasks")
     .textContent =
     tasks.length;
 
-
-  document
-    .getElementById(
-      "completedTasks"
-    )
+  document.getElementById("completedTasks")
     .textContent =
     completed;
 
-
-  document
-    .getElementById(
-      "dueSoonTasks"
-    )
+  document.getElementById("dueSoonTasks")
     .textContent =
     dueSoon;
 
-
-  document
-    .getElementById(
-      "overdueTasks"
-    )
+  document.getElementById("overdueTasks")
     .textContent =
     overdue;
 
 }
 
 
-/* FILTERS */
+/* FILTER OPTIONS */
 
 function updateFilters() {
 
   const departmentSelect =
-    document.getElementById(
-      "departmentFilter"
-    );
+    document.getElementById("departmentFilter");
 
   const picSelect =
-    document.getElementById(
-      "picFilter"
-    );
+    document.getElementById("picFilter");
 
 
-  const oldDepartment =
+  const currentDept =
     departmentSelect.value;
 
-  const oldPIC =
+  const currentPic =
     picSelect.value;
 
 
   const departments =
     [...new Set(
       tasks
-        .map(
-          item =>
-            item.department
-        )
-        .filter(Boolean)
+      .map(t => t.department)
+      .filter(Boolean)
     )].sort();
 
 
   departmentSelect.innerHTML =
-
-    `<option value="">
-      All Departments
-    </option>`
-
-    +
-
+    `<option value="">All Departments</option>` +
     departments
-      .map(
-        name => `
-          <option
-            value="${escapeHTML(name)}"
-          >
-            ${escapeHTML(name)}
-          </option>
-        `
-      )
-      .join("");
+    .map(d =>
+      `<option value="${escapeHTML(d)}">
+        ${escapeHTML(d)}
+      </option>`
+    )
+    .join("");
 
 
   picSelect.innerHTML =
-
-    `<option value="">
-      All PIC
-    </option>`
-
-    +
-
+    `<option value="">All PIC</option>` +
     PIC_LIST
-      .map(
-        name => `
-          <option
-            value="${escapeHTML(name)}"
-          >
-            ${escapeHTML(name)}
-          </option>
-        `
-      )
-      .join("");
+    .map(p =>
+      `<option value="${escapeHTML(p)}">
+        ${escapeHTML(p)}
+      </option>`
+    )
+    .join("");
 
 
   departmentSelect.value =
-    oldDepartment;
+    currentDept;
 
   picSelect.value =
-    oldPIC;
+    currentPic;
 
 }
 
@@ -1276,105 +1242,48 @@ function updateFilters() {
 window.clearFilters =
 function() {
 
-  document
-    .getElementById(
-      "departmentFilter"
-    )
-    .value = "";
-
-  document
-    .getElementById(
-      "picFilter"
-    )
-    .value = "";
-
-  document
-    .getElementById(
-      "statusFilter"
-    )
-    .value = "";
-
-  document
-    .getElementById(
-      "fromDate"
-    )
-    .value = "";
-
-  document
-    .getElementById(
-      "toDate"
-    )
-    .value = "";
+  document.getElementById("departmentFilter").value = "";
+  document.getElementById("picFilter").value = "";
+  document.getElementById("statusFilter").value = "";
+  document.getElementById("fromDate").value = "";
+  document.getElementById("toDate").value = "";
 
   render();
 
 };
 
 
-/* MODAL */
+/* ADD */
 
 window.openAddModal =
 function() {
 
   editingID = null;
 
-  document
-    .getElementById(
-      "modalTitle"
-    )
+  document.getElementById("modalTitle")
     .textContent =
     "Add Task";
 
-
-  document
-    .getElementById(
-      "deleteButton"
-    )
+  document.getElementById("deleteButton")
     .style.display =
     "none";
 
-
-  document
-    .getElementById(
-      "department"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "task"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "due"
-    )
-    .value = "";
-
-
-  document
-    .getElementById(
-      "status"
-    )
-    .value =
-    "Not Started";
-
+  document.getElementById("department").value = "";
+  document.getElementById("task").value = "";
+  document.getElementById("note").value = "";
+  document.getElementById("due").value = "";
+  document.getElementById("status").value = "Not Started";
 
   renderPICCheckboxes([]);
 
-
-  document
-    .getElementById(
-      "modal"
-    )
+  document.getElementById("modal")
     .style.display =
     "flex";
 
 };
 
+
+/* EDIT */
 
 window.editTask =
 function(id) {
@@ -1382,111 +1291,55 @@ function(id) {
   const item =
     tasks.find(
       task =>
-        task.id === id
+      task.id === id
     );
 
-
-  if (!item) {
+  if (!item)
     return;
-  }
 
 
   editingID = id;
 
 
-  document
-    .getElementById(
-      "modalTitle"
-    )
+  document.getElementById("modalTitle")
     .textContent =
     "Edit Task";
 
-
-  document
-    .getElementById(
-      "deleteButton"
-    )
+  document.getElementById("deleteButton")
     .style.display =
     "block";
 
-
-  document
-    .getElementById(
-      "department"
-    )
+  document.getElementById("department")
     .value =
     item.department || "";
 
-
-  document
-    .getElementById(
-      "task"
-    )
+  document.getElementById("task")
     .value =
     item.task || "";
 
+  document.getElementById("note")
+    .value =
+    item.note || "";
 
-  document
-    .getElementById(
-      "due"
-    )
+  document.getElementById("due")
     .value =
     item.due || "";
 
-
-  document
-    .getElementById(
-      "status"
-    )
+  document.getElementById("status")
     .value =
-    item.status ||
-    "Not Started";
+    item.status || "Not Started";
 
 
   renderPICCheckboxes(
-    normalisePICs(
-      item.pic
-    )
+    normalisePICs(item.pic)
   );
 
 
-  document
-    .getElementById(
-      "modal"
-    )
+  document.getElementById("modal")
     .style.display =
     "flex";
 
 };
-
-
-window.closeModal =
-function() {
-
-  document
-    .getElementById("modal")
-    .style.display =
-    "none";
-
-  editingID = null;
-
-};
-
-
-document
-  .getElementById("modal")
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target === this
-      ) {
-        closeModal();
-      }
-
-    }
-  );
 
 
 /* SAVE */
@@ -1495,66 +1348,49 @@ window.saveTask =
 async function() {
 
   const department =
-    document
-      .getElementById(
-        "department"
-      )
-      .value
-      .trim();
-
+    document.getElementById("department")
+    .value.trim();
 
   const task =
-    document
-      .getElementById(
-        "task"
-      )
-      .value
-      .trim();
+    document.getElementById("task")
+    .value.trim();
 
+  const note =
+    document.getElementById("note")
+    .value.trim();
 
   const pic =
     getSelectedPICs();
 
-
   const due =
-    document
-      .getElementById(
-        "due"
-      )
-      .value;
-
+    document.getElementById("due")
+    .value;
 
   const status =
-    document
-      .getElementById(
-        "status"
-      )
-      .value;
+    document.getElementById("status")
+    .value;
 
 
   if (!department) {
 
-    alert(
-      "Please enter a department."
-    );
-
+    alert("Please enter a department.");
     return;
+
   }
 
 
   if (!task) {
 
-    alert(
-      "Please enter a task."
-    );
-
+    alert("Please enter a task.");
     return;
+
   }
 
 
   const data = {
     department,
     task,
+    note,
     pic,
     due,
     status
@@ -1577,11 +1413,12 @@ async function() {
 
       );
 
-    } else {
+    }
+
+    else {
 
       data.createdAt =
         serverTimestamp();
-
 
       await addDoc(
         tasksCollection,
@@ -1593,13 +1430,12 @@ async function() {
 
     closeModal();
 
-  } catch(error) {
+  }
+
+  catch(error) {
 
     console.error(error);
-
-    alert(
-      "Unable to save task."
-    );
+    alert("Unable to save task.");
 
   }
 
@@ -1611,18 +1447,12 @@ async function() {
 window.deleteTask =
 async function() {
 
-  if (!editingID) {
+  if (!editingID)
     return;
-  }
 
 
-  if (
-    !confirm(
-      "Delete this task?"
-    )
-  ) {
+  if (!confirm("Delete this task?"))
     return;
-  }
 
 
   try {
@@ -1637,56 +1467,68 @@ async function() {
 
     );
 
-
     closeModal();
 
-  } catch(error) {
+  }
+
+  catch(error) {
 
     console.error(error);
-
-    alert(
-      "Unable to delete task."
-    );
+    alert("Unable to delete task.");
 
   }
 
 };
 
 
+/* CLOSE */
+
+window.closeModal =
+function() {
+
+  document.getElementById("modal")
+    .style.display =
+    "none";
+
+  editingID = null;
+
+};
+
+
+document.getElementById("modal")
+.addEventListener(
+  "click",
+  function(event) {
+
+    if (event.target === this)
+      closeModal();
+
+  }
+);
+
+
 /* DEADLINE */
 
-function getDeadline(
-  dueDate,
-  status
-) {
+function getDeadline(dueDate,status) {
 
-  if (!dueDate) {
-
+  if (!dueDate)
     return {
-      text: "",
-      className: ""
+      text:"",
+      className:""
     };
-  }
 
 
-  if (
-    status ===
-    "Completed"
-  ) {
-
+  if (status === "Completed")
     return {
-      text: "Completed",
-      className: "done-date"
+      text:"Completed",
+      className:"done-date"
     };
-  }
 
 
   const today =
     new Date();
 
-  today.setHours(
-    0,0,0,0
-  );
+  today.setHours(0,0,0,0);
 
 
   const due =
@@ -1703,66 +1545,42 @@ function getDeadline(
     );
 
 
-  if (days < 0) {
-
+  if (days < 0)
     return {
       text:
-        "⚠ " +
-        Math.abs(days) +
-        "d overdue",
-
-      className:
-        "overdue"
+      "⚠ " +
+      Math.abs(days) +
+      "d overdue",
+      className:"overdue"
     };
-  }
 
 
-  if (days === 0) {
-
+  if (days === 0)
     return {
-      text:
-        "⚠ Due today",
-
-      className:
-        "overdue"
+      text:"⚠ Due today",
+      className:"overdue"
     };
-  }
 
 
-  if (days <= 7) {
-
+  if (days <= 7)
     return {
-      text:
-        "Due in " +
-        days +
-        "d",
-
-      className:
-        "due-soon"
+      text:"Due in " + days + "d",
+      className:"due-soon"
     };
-  }
 
 
   return {
-    text:
-      "Due in " +
-      days +
-      "d",
-
-    className:
-      "due-normal"
+    text:"Due in " + days + "d",
+    className:"due-normal"
   };
 
 }
 
 
-function formatDate(
-  dateString
-) {
+function formatDate(dateString) {
 
-  if (!dateString) {
+  if (!dateString)
     return "—";
-  }
 
 
   const date =
@@ -1772,37 +1590,24 @@ function formatDate(
     );
 
 
-  return date
-    .toLocaleDateString(
-      "en-GB",
-      {
-        day: "2-digit",
-        month: "2-digit"
-      }
-    );
+  return date.toLocaleDateString(
+    "en-GB",
+    {
+      day:"2-digit",
+      month:"2-digit"
+    }
+  );
 
 }
 
 
-function statusClass(
-  status
-) {
+function statusClass(status) {
 
-  if (
-    status ===
-    "Completed"
-  ) {
+  if (status === "Completed")
     return "completed";
-  }
 
-
-  if (
-    status ===
-    "In Progress"
-  ) {
+  if (status === "In Progress")
     return "in-progress";
-  }
-
 
   return "not-started";
 
@@ -1817,21 +1622,10 @@ function(id) {
   const content =
     document.getElementById(id);
 
-
-  if (
-    content.style.display ===
-    "none"
-  ) {
-
-    content.style.display =
-      "block";
-
-  } else {
-
-    content.style.display =
-      "none";
-
-  }
+  content.style.display =
+    content.style.display === "none"
+    ? "block"
+    : "none";
 
 };
 
@@ -1842,112 +1636,65 @@ window.render =
 function() {
 
   const tracker =
-    document.getElementById(
-      "tracker"
-    );
+    document.getElementById("tracker");
 
 
   const departmentFilter =
-    document
-      .getElementById(
-        "departmentFilter"
-      )
-      .value;
-
+    document.getElementById("departmentFilter").value;
 
   const picFilter =
-    document
-      .getElementById(
-        "picFilter"
-      )
-      .value;
-
+    document.getElementById("picFilter").value;
 
   const statusFilter =
-    document
-      .getElementById(
-        "statusFilter"
-      )
-      .value;
-
+    document.getElementById("statusFilter").value;
 
   const fromDate =
-    document
-      .getElementById(
-        "fromDate"
-      )
-      .value;
-
+    document.getElementById("fromDate").value;
 
   const toDate =
-    document
-      .getElementById(
-        "toDate"
-      )
-      .value;
+    document.getElementById("toDate").value;
 
 
   let filtered =
     tasks.filter(item => {
 
-
       if (
         departmentFilter &&
-        item.department !==
-        departmentFilter
-      ) {
+        item.department !== departmentFilter
+      )
         return false;
-      }
 
 
       if (picFilter) {
 
         const pics =
-          normalisePICs(
-            item.pic
-          );
+          normalisePICs(item.pic);
 
-
-        if (
-          !pics.includes(
-            picFilter
-          )
-        ) {
+        if (!pics.includes(picFilter))
           return false;
-        }
 
       }
 
 
       if (
         statusFilter &&
-        item.status !==
-        statusFilter
-      ) {
+        item.status !== statusFilter
+      )
         return false;
-      }
 
 
       if (
         fromDate &&
-        (
-          !item.due ||
-          item.due < fromDate
-        )
-      ) {
+        (!item.due || item.due < fromDate)
+      )
         return false;
-      }
 
 
       if (
         toDate &&
-        (
-          !item.due ||
-          item.due > toDate
-        )
-      ) {
+        (!item.due || item.due > toDate)
+      )
         return false;
-      }
 
 
       return true;
@@ -1955,10 +1702,7 @@ function() {
     });
 
 
-  document
-    .getElementById(
-      "filterCount"
-    )
+  document.getElementById("filterCount")
     .textContent =
     filtered.length +
     " of " +
@@ -1966,32 +1710,23 @@ function() {
     " tasks shown";
 
 
-  filtered.sort(
-    (a,b) => {
+  filtered.sort((a,b) => {
 
-      if (!a.due && !b.due) {
-        return 0;
-      }
+    if (!a.due && !b.due)
+      return 0;
 
-      if (!a.due) {
-        return 1;
-      }
+    if (!a.due)
+      return 1;
 
-      if (!b.due) {
-        return -1;
-      }
+    if (!b.due)
+      return -1;
 
-      return a.due.localeCompare(
-        b.due
-      );
+    return a.due.localeCompare(b.due);
 
-    }
-  );
+  });
 
 
-  if (
-    filtered.length === 0
-  ) {
+  if (!filtered.length) {
 
     tracker.innerHTML = `
       <div class="empty">
@@ -2000,6 +1735,7 @@ function() {
     `;
 
     return;
+
   }
 
 
@@ -2009,26 +1745,12 @@ function() {
   filtered.forEach(item => {
 
     const department =
-      item.department ||
-      "General";
+      item.department || "General";
 
+    if (!departments[department])
+      departments[department] = [];
 
-    if (
-      !departments[
-        department
-      ]
-    ) {
-
-      departments[
-        department
-      ] = [];
-
-    }
-
-
-    departments[
-      department
-    ].push(item);
+    departments[department].push(item);
 
   });
 
@@ -2036,264 +1758,198 @@ function() {
   tracker.innerHTML = "";
 
 
-  Object
-    .keys(departments)
-    .forEach(
-      (department,index) => {
+  Object.keys(departments)
+  .forEach((department,index) => {
 
+    const sectionTasks =
+      departments[department];
 
-        const sectionTasks =
-          departments[
-            department
-          ];
+    const completed =
+      sectionTasks.filter(
+        task =>
+        task.status === "Completed"
+      ).length;
 
+    const percentage =
+      Math.round(
+        completed /
+        sectionTasks.length *
+        100
+      );
 
-        const completed =
-          sectionTasks
-            .filter(
-              item =>
-                item.status ===
-                "Completed"
-            )
-            .length;
+    const id =
+      "section-" + index;
 
+    const section =
+      document.createElement("div");
 
-        const percentage =
-          Math.round(
-            completed /
-            sectionTasks.length *
-            100
-          );
+    section.className =
+      "section";
 
 
-        const sectionID =
-          "section-" +
-          index;
+    section.innerHTML = `
 
+      <div
+        class="section-header"
+        onclick="toggleSection('${id}')"
+      >
 
-        const section =
-          document.createElement(
-            "div"
-          );
+        <div class="section-title-area">
 
+          <span class="arrow">▾</span>
 
-        section.className =
-          "section";
+          <span class="section-title">
+            ${escapeHTML(department)}
+          </span>
 
+          <span class="task-count">
+            ${sectionTasks.length} tasks
+          </span>
 
-        section.innerHTML = `
+        </div>
 
-          <div
-            class="section-header"
-            onclick="
-              toggleSection(
-                '${sectionID}'
-              )
-            "
-          >
+        <div class="section-progress">
+          ${percentage}%
+        </div>
 
-            <div
-              class="section-title-area"
-            >
+      </div>
 
-              <span class="arrow">
-                ▾
-              </span>
 
-              <span class="section-title">
-                ${escapeHTML(
-                  department
-                )}
-              </span>
+      <div
+        class="section-content"
+        id="${id}"
+      >
 
-              <span class="task-count">
-                ${sectionTasks.length}
-                tasks
-              </span>
+        <table>
 
-            </div>
+          <thead>
+            <tr>
+              <th style="width:38%">TASK</th>
+              <th style="width:22%">PIC</th>
+              <th style="width:22%">DATES</th>
+              <th style="width:15%">STATUS</th>
+              <th></th>
+            </tr>
+          </thead>
 
-            <div
-              class="section-progress"
-            >
-              ${percentage}%
-            </div>
+          <tbody>
 
-          </div>
+          ${sectionTasks.map(item => {
 
+            const deadline =
+              getDeadline(
+                item.due,
+                item.status
+              );
 
-          <div
-            class="section-content"
-            id="${sectionID}"
-          >
+            return `
 
-            <table>
+              <tr>
 
-              <thead>
+                <td>
 
-                <tr>
+                  <div class="task-name">
+                    ${escapeHTML(item.task)}
+                  </div>
 
-                  <th style="width:38%">
-                    TASK
-                  </th>
+                  ${
+                    item.note
+                    ?
+                    `
+                    <div class="task-note">
+                      ${escapeHTML(item.note)}
+                    </div>
+                    `
+                    :
+                    ""
+                  }
 
-                  <th style="width:22%">
-                    PIC
-                  </th>
+                </td>
 
-                  <th style="width:22%">
-                    DATES
-                  </th>
-
-                  <th style="width:15%">
-                    STATUS
-                  </th>
-
-                  <th></th>
-
-                </tr>
 
-              </thead>
+                <td>
+                  ${escapeHTML(
+                    displayPICs(item.pic)
+                  )}
+                </td>
 
-              <tbody>
 
-              ${
-                sectionTasks
-                  .map(item => {
-
-                    const deadline =
-                      getDeadline(
-                        item.due,
-                        item.status
-                      );
-
-
-                    return `
-
-                      <tr>
+                <td>
 
-                        <td>
-
-                          <div
-                            class="task-name"
-                          >
-                            ${escapeHTML(
-                              item.task
-                            )}
-                          </div>
+                  <span class="date-main">
+                    ${formatDate(item.due)}
+                  </span>
 
-                          <div
-                            class="task-label"
-                          >
-                            Deadline
-                          </div>
+                  ${
+                    deadline.text
+                    ?
+                    `
+                    <span
+                      class="
+                        deadline-badge
+                        ${deadline.className}
+                      "
+                    >
+                      ${escapeHTML(deadline.text)}
+                    </span>
+                    `
+                    :
+                    ""
+                  }
 
-                        </td>
+                </td>
 
 
-                        <td>
-                          ${escapeHTML(
-                            displayPICs(
-                              item.pic
-                            )
-                          )}
-                        </td>
+                <td>
 
+                  <span
+                    class="
+                      status
+                      ${statusClass(item.status)}
+                    "
+                  >
+                    ${escapeHTML(
+                      item.status || "Not Started"
+                    )}
+                  </span>
 
-                        <td>
+                </td>
 
-                          <span
-                            class="date-main"
-                          >
-                            ${formatDate(
-                              item.due
-                            )}
-                          </span>
 
-                          ${
-                            deadline.text
-                            ?
-                            `
-                              <span
-                                class="
-                                  deadline-badge
-                                  ${deadline.className}
-                                "
-                              >
-                                ${escapeHTML(
-                                  deadline.text
-                                )}
-                              </span>
-                            `
-                            :
-                            ""
-                          }
+                <td>
 
-                        </td>
+                  <button
+                    class="edit-btn"
+                    onclick="editTask('${item.id}')"
+                  >
+                    ✎
+                  </button>
 
+                </td>
 
-                        <td>
+              </tr>
 
-                          <span
-                            class="
-                              status
-                              ${statusClass(
-                                item.status
-                              )}
-                            "
-                          >
-                            ${escapeHTML(
-                              item.status ||
-                              "Not Started"
-                            )}
-                          </span>
+            `;
 
-                        </td>
+          }).join("")}
 
+          </tbody>
 
-                        <td>
+        </table>
 
-                          <button
-                            class="edit-btn"
-                            onclick="
-                              editTask(
-                                '${item.id}'
-                              )
-                            "
-                          >
-                            ✎
-                          </button>
+      </div>
 
-                        </td>
+    `;
 
-                      </tr>
 
-                    `;
+    tracker.appendChild(section);
 
-                  })
-                  .join("")
-              }
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        `;
-
-
-        tracker.appendChild(
-          section
-        );
-
-      }
-    );
+  });
 
 };
 
 
-/* CALENDAR FILTER */
+/* CALENDAR DEPARTMENT */
 
 function updateCalendarDepartmentFilter() {
 
@@ -2302,45 +1958,30 @@ function updateCalendarDepartmentFilter() {
       "calendarDepartmentFilter"
     );
 
-
-  const oldValue =
+  const current =
     select.value;
-
 
   const departments =
     [...new Set(
       tasks
-        .map(
-          item =>
-            item.department
-        )
-        .filter(Boolean)
+      .map(t => t.department)
+      .filter(Boolean)
     )].sort();
 
 
   select.innerHTML =
-
-    `<option value="">
-      All Departments
-    </option>`
-
-    +
-
+    `<option value="">All Departments</option>` +
     departments
-      .map(
-        name => `
-          <option
-            value="${escapeHTML(name)}"
-          >
-            ${escapeHTML(name)}
-          </option>
-        `
-      )
-      .join("");
+    .map(d =>
+      `<option value="${escapeHTML(d)}">
+        ${escapeHTML(d)}
+      </option>`
+    )
+    .join("");
 
 
   select.value =
-    oldValue;
+    current;
 
 }
 
@@ -2353,8 +1994,7 @@ function(amount) {
   calendarDate =
     new Date(
       calendarDate.getFullYear(),
-      calendarDate.getMonth() +
-      amount,
+      calendarDate.getMonth() + amount,
       1
     );
 
@@ -2374,29 +2014,21 @@ function() {
 };
 
 
-/* CALENDAR RENDER */
+/* CALENDAR */
 
 window.renderCalendar =
 function() {
 
   const grid =
+    document.getElementById("calendarGrid");
+
+  const title =
+    document.getElementById("calendarMonth");
+
+  const filter =
     document.getElementById(
-      "calendarGrid"
-    );
-
-
-  const monthTitle =
-    document.getElementById(
-      "calendarMonth"
-    );
-
-
-  const departmentFilter =
-    document
-      .getElementById(
-        "calendarDepartmentFilter"
-      )
-      .value;
+      "calendarDepartmentFilter"
+    ).value;
 
 
   const year =
@@ -2406,36 +2038,25 @@ function() {
     calendarDate.getMonth();
 
 
-  monthTitle.textContent =
-    calendarDate
-      .toLocaleDateString(
-        "en-US",
-        {
-          month: "long",
-          year: "numeric"
-        }
-      );
+  title.textContent =
+    calendarDate.toLocaleDateString(
+      "en-US",
+      {
+        month:"long",
+        year:"numeric"
+      }
+    );
 
 
   const firstDay =
-    new Date(
-      year,
-      month,
-      1
-    );
-
+    new Date(year,month,1);
 
   const lastDay =
-    new Date(
-      year,
-      month + 1,
-      0
-    );
+    new Date(year,month+1,0);
 
 
   let startDay =
     firstDay.getDay();
-
 
   startDay =
     startDay === 0
@@ -2457,16 +2078,12 @@ function() {
   ) {
 
     const empty =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     empty.className =
       "calendar-cell calendar-empty";
 
-    grid.appendChild(
-      empty
-    );
+    grid.appendChild(empty);
 
   }
 
@@ -2474,17 +2091,12 @@ function() {
   const today =
     new Date();
 
-
   const todayString =
-    [
-      today.getFullYear(),
-      String(
-        today.getMonth() + 1
-      ).padStart(2,"0"),
-      String(
-        today.getDate()
-      ).padStart(2,"0")
-    ].join("-");
+    `${today.getFullYear()}-${String(
+      today.getMonth()+1
+    ).padStart(2,"0")}-${String(
+      today.getDate()
+    ).padStart(2,"0")}`;
 
 
   for (
@@ -2494,109 +2106,78 @@ function() {
   ) {
 
     const cell =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     cell.className =
       "calendar-cell";
 
 
     const dateString =
-      year +
-      "-" +
-      String(
-        month + 1
-      ).padStart(2,"0") +
-      "-" +
-      String(day)
-        .padStart(2,"0");
+      `${year}-${String(
+        month+1
+      ).padStart(2,"0")}-${String(
+        day
+      ).padStart(2,"0")}`;
 
 
-    if (
-      dateString ===
-      todayString
-    ) {
-
+    if (dateString === todayString)
       cell.classList.add(
         "calendar-today"
       );
 
-    }
 
-
-    cell.innerHTML = `
-      <div class="calendar-date">
+    cell.innerHTML =
+      `<div class="calendar-date">
         ${day}
-      </div>
-    `;
+      </div>`;
 
 
     const dayTasks =
-      tasks.filter(item => {
+      tasks.filter(task => {
+
+        if (task.due !== dateString)
+          return false;
 
         if (
-          item.due !==
-          dateString
-        ) {
+          filter &&
+          task.department !== filter
+        )
           return false;
-        }
-
-
-        if (
-          departmentFilter &&
-          item.department !==
-          departmentFilter
-        ) {
-          return false;
-        }
-
 
         return true;
 
       });
 
 
-    dayTasks.forEach(item => {
+    dayTasks.forEach(task => {
 
       const taskBox =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       taskBox.className =
         "calendar-task " +
-        statusClass(
-          item.status
-        );
+        statusClass(task.status);
 
 
       const pics =
-        normalisePICs(
-          item.pic
-        ).join(", ");
+        normalisePICs(task.pic)
+        .join(", ");
 
 
       taskBox.innerHTML = `
 
         <strong>
-          ${escapeHTML(
-            item.task
-          )}
+          ${escapeHTML(task.task)}
         </strong>
 
         ${
           pics
           ?
           `
-            <br>
-            <span
-              class="calendar-task-pic"
-            >
-              ${escapeHTML(pics)}
-            </span>
+          <br>
+          <span class="calendar-task-pic">
+            ${escapeHTML(pics)}
+          </span>
           `
           :
           ""
@@ -2606,25 +2187,15 @@ function() {
 
 
       taskBox.onclick =
-        function() {
-
-          editTask(
-            item.id
-          );
-
-        };
+        () => editTask(task.id);
 
 
-      cell.appendChild(
-        taskBox
-      );
+      cell.appendChild(taskBox);
 
     });
 
 
-    grid.appendChild(
-      cell
-    );
+    grid.appendChild(cell);
 
   }
 
