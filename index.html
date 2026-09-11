@@ -248,7 +248,6 @@ tr:last-child td {
   padding: 0;
   text-align: left;
   white-space: normal;
-  display: block;
 }
 
 /* DATE */
@@ -319,7 +318,7 @@ tr:last-child td {
   font-size: 16px;
 }
 
-/* PIC */
+/* PIC CHECKBOX */
 
 .pic-checkbox-box {
   border: 1px solid #ddd;
@@ -596,6 +595,113 @@ label {
     gap: 0;
   }
 
+  /* MOBILE TASK VIEW */
+
+  .section-content {
+    overflow-x: visible;
+  }
+
+  table {
+    min-width: 0;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody,
+  tr,
+  td {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    position: relative;
+    padding: 16px 18px;
+    border-bottom: 1px solid #eee;
+  }
+
+  tr:last-child {
+    border-bottom: none;
+  }
+
+  td {
+    padding: 0;
+    border: none;
+    margin-bottom: 13px;
+  }
+
+  td:last-child {
+    margin-bottom: 0;
+  }
+
+  td:nth-child(1) {
+    padding-right: 35px;
+  }
+
+  .task-name {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .task-note {
+    font-size: 11px;
+    max-width: none;
+    line-height: 1.4;
+  }
+
+  td:nth-child(2)::before {
+    content: "PIC";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #aaa;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  td:nth-child(2) {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  td:nth-child(3)::before {
+    content: "DATES";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #aaa;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  td:nth-child(3) {
+    font-size: 12px;
+  }
+
+  td:nth-child(4)::before {
+    content: "STATUS";
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: #aaa;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  td:nth-child(5) {
+    position: absolute;
+    top: 15px;
+    right: 16px;
+    width: auto;
+  }
+
+  .edit-btn {
+    font-size: 16px;
+  }
+
   /* MOBILE CALENDAR */
 
   .calendar-wrapper {
@@ -679,7 +785,6 @@ label {
   #calendarDepartmentFilter {
     width: 100%;
   }
-
 }
 </style>
 </head>
@@ -923,14 +1028,12 @@ label {
         Delete
       </button>
 
-
       <button
         class="cancel-btn"
         onclick="closeModal()"
       >
         Cancel
       </button>
-
 
       <button
         class="save-btn"
@@ -2112,7 +2215,8 @@ window.toggleSection =
 function(id) {
 
   const content =
-    document.getElementById(id);
+    document
+    .getElementById(id);
 
 
   content.style.display =
