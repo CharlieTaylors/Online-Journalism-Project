@@ -7,9 +7,8 @@
 <title>Online Journalism Asm1 Tracker</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -21,7 +20,7 @@ body {
 .container {
   width: 94%;
   max-width: 1250px;
-  margin: 45px auto;
+  margin: 38px auto;
 }
 
 /* HEADER */
@@ -30,17 +29,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 30px;
+  font-size: 28px;
 }
 
 .subtitle {
   color: #888;
-  font-size: 14px;
+  font-size: 13px;
   margin-top: 5px;
 }
 
@@ -48,10 +47,91 @@ body {
   background: #2f3437;
   color: white;
   border: none;
-  padding: 11px 17px;
+  padding: 11px 18px;
   border-radius: 7px;
   cursor: pointer;
   font-weight: 600;
+}
+
+/* STATS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #ececec;
+  border-radius: 9px;
+  padding: 17px 20px;
+}
+
+.stat-number {
+  font-size: 27px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: .7px;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.stat-completed .stat-number {
+  color: #4f8460;
+}
+
+.stat-due .stat-number {
+  color: #a87820;
+}
+
+.stat-overdue .stat-number {
+  color: #c65959;
+}
+
+/* FILTER */
+
+.filters {
+  background: white;
+  border: 1px solid #ececec;
+  border-radius: 9px;
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+  align-items: center;
+}
+
+.filters select,
+.filters input {
+  width: auto;
+  min-width: 135px;
+  padding: 8px 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 6px;
+  background: white;
+  font-size: 12px;
+}
+
+.clear-btn {
+  border: none;
+  background: #efefed;
+  padding: 8px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filter-count {
+  margin-left: auto;
+  color: #999;
+  font-size: 11px;
 }
 
 /* SECTION */
@@ -59,13 +139,13 @@ body {
 .section {
   background: white;
   border-radius: 9px;
-  margin-bottom: 25px;
+  margin-bottom: 22px;
   border: 1px solid #ececec;
   overflow: hidden;
 }
 
 .section-header {
-  padding: 16px 18px;
+  padding: 15px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,7 +162,6 @@ body {
 .arrow {
   font-size: 12px;
   color: #777;
-  transition: 0.2s;
 }
 
 .section-title {
@@ -97,14 +176,14 @@ body {
 
 .section-progress {
   font-size: 11px;
-  color: #999;
+  color: #888;
 }
+
+/* TABLE */
 
 .section-content {
   overflow-x: auto;
 }
-
-/* TABLE */
 
 table {
   width: 100%;
@@ -114,7 +193,7 @@ table {
 
 th {
   text-align: left;
-  padding: 12px 18px;
+  padding: 11px 18px;
   font-size: 10px;
   letter-spacing: 1px;
   color: #8b8b8b;
@@ -142,7 +221,7 @@ tr:last-child td {
   font-size: 10px;
 }
 
-/* DATE */
+/* DATES */
 
 .date-main {
   display: inline-block;
@@ -202,21 +281,12 @@ tr:last-child td {
   color: #4b7154;
 }
 
-/* EDIT */
-
 .edit-btn {
   border: none;
   background: transparent;
   cursor: pointer;
   color: #777;
   font-size: 14px;
-}
-
-/* EMPTY */
-
-.empty {
-  padding: 25px;
-  color: #888;
 }
 
 /* MODAL */
@@ -252,13 +322,12 @@ label {
   color: #555;
 }
 
-input,
-select {
+.modal-box input,
+.modal-box select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 13px;
 }
 
 .modal-buttons {
@@ -290,28 +359,41 @@ select {
   margin-right: auto;
 }
 
-/* MOBILE */
+.empty {
+  padding: 30px;
+  color: #888;
+  background: white;
+  border-radius: 8px;
+}
 
-@media(max-width: 700px) {
+@media(max-width: 750px) {
 
-  .container {
-    width: 96%;
-    margin-top: 25px;
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .header h1 {
-    font-size: 23px;
+    font-size: 22px;
   }
 
-  .add-btn {
-    font-size: 12px;
+  .filters {
+    align-items: stretch;
   }
 
+  .filters select,
+  .filters input {
+    width: calc(50% - 5px);
+    min-width: 0;
+  }
+
+  .filter-count {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -321,9 +403,7 @@ select {
 
     <div>
       <h1>Online Journalism Asm1</h1>
-      <div class="subtitle">
-        Assignment Task Tracker
-      </div>
+      <div class="subtitle">Assignment Task Tracker</div>
     </div>
 
     <button class="add-btn" onclick="openAddModal()">
@@ -332,6 +412,76 @@ select {
 
   </div>
 
+
+  <!-- STATS -->
+
+  <div class="stats">
+
+    <div class="stat-card">
+      <div class="stat-number" id="totalTasks">0</div>
+      <div class="stat-label">Total Tasks</div>
+    </div>
+
+    <div class="stat-card stat-completed">
+      <div class="stat-number" id="completedTasks">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+
+    <div class="stat-card stat-due">
+      <div class="stat-number" id="dueSoonTasks">0</div>
+      <div class="stat-label">Due Within 7 Days</div>
+    </div>
+
+    <div class="stat-card stat-overdue">
+      <div class="stat-number" id="overdueTasks">0</div>
+      <div class="stat-label">Overdue</div>
+    </div>
+
+  </div>
+
+
+  <!-- FILTER -->
+
+  <div class="filters">
+
+    <select id="departmentFilter" onchange="render()">
+      <option value="">All Departments</option>
+    </select>
+
+    <select id="picFilter" onchange="render()">
+      <option value="">All PIC</option>
+    </select>
+
+    <select id="statusFilter" onchange="render()">
+      <option value="">All Status</option>
+      <option value="Not Started">Not Started</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Completed">Completed</option>
+    </select>
+
+    <input
+      type="date"
+      id="fromDate"
+      onchange="render()"
+      title="From date"
+    >
+
+    <input
+      type="date"
+      id="toDate"
+      onchange="render()"
+      title="To date"
+    >
+
+    <button class="clear-btn" onclick="clearFilters()">
+      Clear
+    </button>
+
+    <span class="filter-count" id="filterCount"></span>
+
+  </div>
+
+
   <div id="tracker">
     Loading...
   </div>
@@ -339,76 +489,62 @@ select {
 </div>
 
 
-<!-- ADD / EDIT MODAL -->
+<!-- ADD / EDIT -->
 
 <div class="modal" id="modal">
 
-  <div class="modal-box">
+<div class="modal-box">
 
-    <h2 id="modalTitle">Add Task</h2>
+  <h2 id="modalTitle">Add Task</h2>
 
-    <label>Department / Section</label>
-    <input
-      id="department"
-      placeholder="e.g. Writing"
+  <label>Department / Section</label>
+  <input id="department" placeholder="e.g. Writing">
+
+  <label>Task</label>
+  <input id="task" placeholder="Task name">
+
+  <label>PIC</label>
+  <input id="pic" placeholder="e.g. Chang Yi, Ashley">
+
+  <label>Date</label>
+  <input type="date" id="due">
+
+  <label>Status</label>
+
+  <select id="status">
+    <option>Not Started</option>
+    <option>In Progress</option>
+    <option>Completed</option>
+  </select>
+
+  <div class="modal-buttons">
+
+    <button
+      class="delete-btn"
+      id="deleteButton"
+      onclick="deleteTask()"
+      style="display:none"
     >
+      Delete
+    </button>
 
-    <label>Task</label>
-    <input
-      id="task"
-      placeholder="Task name"
+    <button
+      class="cancel-btn"
+      onclick="closeModal()"
     >
+      Cancel
+    </button>
 
-    <label>PIC</label>
-    <input
-      id="pic"
-      placeholder="e.g. Chang Yi, Ashley"
+    <button
+      class="save-btn"
+      onclick="saveTask()"
     >
-
-    <label>Date</label>
-    <input
-      type="date"
-      id="due"
-    >
-
-    <label>Status</label>
-
-    <select id="status">
-      <option>Not Started</option>
-      <option>In Progress</option>
-      <option>Completed</option>
-    </select>
-
-
-    <div class="modal-buttons">
-
-      <button
-        class="delete-btn"
-        id="deleteButton"
-        onclick="deleteTask()"
-        style="display:none"
-      >
-        Delete
-      </button>
-
-      <button
-        class="cancel-btn"
-        onclick="closeModal()"
-      >
-        Cancel
-      </button>
-
-      <button
-        class="save-btn"
-        onclick="saveTask()"
-      >
-        Save
-      </button>
-
-    </div>
+      Save
+    </button>
 
   </div>
 
+</div>
 </div>
 
 
@@ -418,7 +554,6 @@ import {
   initializeApp
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
 
 import {
   getFirestore,
@@ -432,8 +567,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-
-/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -462,54 +595,177 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 
 const tasksCollection =
   collection(db, "tasks");
 
-
 let tasks = [];
-
 let editingID = null;
 
 
 /* LIVE SYNC */
 
-onSnapshot(
-  tasksCollection,
+onSnapshot(tasksCollection, snapshot => {
 
-  snapshot => {
+  tasks = [];
 
-    tasks = [];
+  snapshot.forEach(item => {
 
-    snapshot.forEach(item => {
-
-      tasks.push({
-        id: item.id,
-        ...item.data()
-      });
-
+    tasks.push({
+      id: item.id,
+      ...item.data()
     });
 
-    render();
+  });
 
-  },
+  updateFilters();
+  updateStats();
+  render();
 
-  error => {
-
-    console.error(error);
-
-    document.getElementById("tracker").innerHTML =
-      `<div class="empty">
-      Unable to load tasks. Please check Firestore permissions.
-      </div>`;
-
-  }
-);
+});
 
 
-/* ADD TASK */
+/* STATS */
+
+function updateStats() {
+
+  let completed = 0;
+  let dueSoon = 0;
+  let overdue = 0;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  tasks.forEach(item => {
+
+    if (item.status === "Completed") {
+      completed++;
+      return;
+    }
+
+    if (!item.due) return;
+
+    const due =
+      new Date(item.due + "T00:00:00");
+
+    const days =
+      Math.round(
+        (due - today) /
+        86400000
+      );
+
+    if (days < 0) {
+      overdue++;
+    }
+
+    else if (days <= 7) {
+      dueSoon++;
+    }
+
+  });
+
+
+  document.getElementById("totalTasks")
+    .textContent = tasks.length;
+
+  document.getElementById("completedTasks")
+    .textContent = completed;
+
+  document.getElementById("dueSoonTasks")
+    .textContent = dueSoon;
+
+  document.getElementById("overdueTasks")
+    .textContent = overdue;
+
+}
+
+
+/* FILTER OPTIONS */
+
+function updateFilters() {
+
+  const departmentSelect =
+    document.getElementById("departmentFilter");
+
+  const picSelect =
+    document.getElementById("picFilter");
+
+  const currentDept =
+    departmentSelect.value;
+
+  const currentPic =
+    picSelect.value;
+
+
+  const departments =
+    [...new Set(
+      tasks
+      .map(t => t.department)
+      .filter(Boolean)
+    )].sort();
+
+
+  const pics = new Set();
+
+  tasks.forEach(task => {
+
+    if (!task.pic) return;
+
+    task.pic
+    .split(",")
+    .map(name => name.trim())
+    .filter(Boolean)
+    .forEach(name => pics.add(name));
+
+  });
+
+
+  departmentSelect.innerHTML =
+    `<option value="">All Departments</option>` +
+    departments
+    .map(d =>
+      `<option value="${escapeHTML(d)}">
+        ${escapeHTML(d)}
+      </option>`
+    )
+    .join("");
+
+
+  picSelect.innerHTML =
+    `<option value="">All PIC</option>` +
+    [...pics]
+    .sort()
+    .map(p =>
+      `<option value="${escapeHTML(p)}">
+        ${escapeHTML(p)}
+      </option>`
+    )
+    .join("");
+
+
+  departmentSelect.value = currentDept;
+  picSelect.value = currentPic;
+
+}
+
+
+/* CLEAR FILTER */
+
+window.clearFilters = function() {
+
+  document.getElementById("departmentFilter").value = "";
+  document.getElementById("picFilter").value = "";
+  document.getElementById("statusFilter").value = "";
+  document.getElementById("fromDate").value = "";
+  document.getElementById("toDate").value = "";
+
+  render();
+
+};
+
+
+/* ADD */
 
 window.openAddModal = function() {
 
@@ -534,7 +790,7 @@ window.openAddModal = function() {
 };
 
 
-/* EDIT TASK */
+/* EDIT */
 
 window.editTask = function(id) {
 
@@ -577,96 +833,68 @@ window.editTask = function(id) {
 window.saveTask = async function() {
 
   const department =
-    document
-    .getElementById("department")
+    document.getElementById("department")
     .value.trim();
 
   const task =
-    document
-    .getElementById("task")
+    document.getElementById("task")
     .value.trim();
 
   const pic =
-    document
-    .getElementById("pic")
+    document.getElementById("pic")
     .value.trim();
 
   const due =
-    document
-    .getElementById("due")
+    document.getElementById("due")
     .value;
 
   const status =
-    document
-    .getElementById("status")
+    document.getElementById("status")
     .value;
 
 
-  if (!task) {
-
-    alert("Please enter a task.");
-
+  if (!department) {
+    alert("Please enter a department.");
     return;
-
   }
 
-
-  if (!department) {
-
-    alert("Please enter a department / section.");
-
+  if (!task) {
+    alert("Please enter a task.");
     return;
-
   }
 
 
   const data = {
-
     department,
     task,
     pic,
     due,
     status
-
   };
 
 
-  try {
+  if (editingID) {
 
-    if (editingID) {
-
-      await updateDoc(
-        doc(db, "tasks", editingID),
-        data
-      );
-
-    }
-
-    else {
-
-      data.createdAt =
-        serverTimestamp();
-
-      await addDoc(
-        tasksCollection,
-        data
-      );
-
-    }
-
-    closeModal();
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert(
-      "Unable to save task. Please check Firebase permissions."
+    await updateDoc(
+      doc(db, "tasks", editingID),
+      data
     );
 
   }
+
+  else {
+
+    data.createdAt =
+      serverTimestamp();
+
+    await addDoc(
+      tasksCollection,
+      data
+    );
+
+  }
+
+  closeModal();
 
 };
 
@@ -675,29 +903,16 @@ window.saveTask = async function() {
 
 window.deleteTask = async function() {
 
-  if (!editingID)
-    return;
+  if (!editingID) return;
 
   if (!confirm("Delete this task?"))
     return;
 
-  try {
+  await deleteDoc(
+    doc(db, "tasks", editingID)
+  );
 
-    await deleteDoc(
-      doc(db, "tasks", editingID)
-    );
-
-    closeModal();
-
-  }
-
-  catch(error) {
-
-    console.error(error);
-
-    alert("Unable to delete task.");
-
-  }
+  closeModal();
 
 };
 
@@ -714,73 +929,40 @@ window.closeModal = function() {
 };
 
 
-/* CLICK OUTSIDE MODAL */
-
-document
-.getElementById("modal")
-.addEventListener(
-  "click",
-  function(event) {
-
-    if (event.target === this)
-      closeModal();
-
-  }
-);
-
-
-/* DATE COUNTDOWN */
+/* DATE */
 
 function getDeadline(dueDate, status) {
 
-  if (!dueDate) {
-
-    return {
-      text: "",
-      className: ""
-    };
-
-  }
-
+  if (!dueDate) return {
+    text:"",
+    className:""
+  };
 
   if (status === "Completed") {
 
     return {
-      text: "Completed",
-      className: "done-date"
+      text:"Completed",
+      className:"done-date"
     };
 
   }
 
-
-  const today =
-    new Date();
-
+  const today = new Date();
   today.setHours(0,0,0,0);
 
-
   const due =
-    new Date(
-      dueDate + "T00:00:00"
-    );
-
-
-  const difference =
-    due.getTime() -
-    today.getTime();
-
+    new Date(dueDate + "T00:00:00");
 
   const days =
     Math.round(
-      difference /
-      (1000 * 60 * 60 * 24)
+      (due - today) /
+      86400000
     );
 
 
   if (days < 0) {
 
     return {
-
       text:
         "⚠ " +
         Math.abs(days) +
@@ -788,7 +970,6 @@ function getDeadline(dueDate, status) {
 
       className:
         "overdue"
-
     };
 
   }
@@ -797,37 +978,29 @@ function getDeadline(dueDate, status) {
   if (days === 0) {
 
     return {
-
-      text:
-        "⚠ Due today",
-
-      className:
-        "overdue"
-
+      text:"⚠ Due today",
+      className:"overdue"
     };
 
   }
 
 
-  if (days <= 3) {
+  if (days <= 7) {
 
     return {
-
       text:
-        "⌛ Due in " +
+        "Due in " +
         days +
         "d",
 
       className:
         "due-soon"
-
     };
 
   }
 
 
   return {
-
     text:
       "Due in " +
       days +
@@ -835,40 +1008,30 @@ function getDeadline(dueDate, status) {
 
     className:
       "due-normal"
-
   };
 
 }
 
 
-/* FORMAT DATE */
-
 function formatDate(dateString) {
 
-  if (!dateString)
-    return "—";
-
+  if (!dateString) return "—";
 
   const date =
-    new Date(
-      dateString + "T00:00:00"
-    );
-
+    new Date(dateString + "T00:00:00");
 
   return date.toLocaleDateString(
     "en-GB",
-
     {
-      day: "2-digit",
-      month: "2-digit"
+      day:"2-digit",
+      month:"2-digit"
     }
-
   );
 
 }
 
 
-/* STATUS STYLE */
+/* STATUS */
 
 function statusClass(status) {
 
@@ -883,71 +1046,127 @@ function statusClass(status) {
 }
 
 
-/* SAFE TEXT */
+/* SAFE HTML */
 
 function escapeHTML(value) {
 
   return String(value || "")
-
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
-/* COLLAPSE SECTION */
+/* COLLAPSE */
 
 window.toggleSection = function(id) {
 
-  const element =
+  const section =
     document.getElementById(id);
 
-  if (
-    element.style.display === "none"
-  ) {
-
-    element.style.display = "block";
-
-  }
-
-  else {
-
-    element.style.display = "none";
-
-  }
+  section.style.display =
+    section.style.display === "none"
+    ? "block"
+    : "none";
 
 };
 
 
 /* RENDER */
 
-function render() {
+window.render = function() {
 
   const tracker =
     document.getElementById("tracker");
 
 
-  if (tasks.length === 0) {
+  const departmentFilter =
+    document.getElementById("departmentFilter")
+    .value;
 
-    tracker.innerHTML =
-      `<div class="empty">
-      No tasks yet. Click <b>+ Add Task</b> to start.
-      </div>`;
+  const picFilter =
+    document.getElementById("picFilter")
+    .value;
 
-    return;
+  const statusFilter =
+    document.getElementById("statusFilter")
+    .value;
 
-  }
+  const fromDate =
+    document.getElementById("fromDate")
+    .value;
+
+  const toDate =
+    document.getElementById("toDate")
+    .value;
 
 
-  /* SORT */
+  let filtered =
+    tasks.filter(item => {
 
-  tasks.sort((a,b) => {
+
+      if (
+        departmentFilter &&
+        item.department !== departmentFilter
+      )
+        return false;
+
+
+      if (picFilter) {
+
+        const itemPics =
+          (item.pic || "")
+          .split(",")
+          .map(x => x.trim());
+
+        if (!itemPics.includes(picFilter))
+          return false;
+
+      }
+
+
+      if (
+        statusFilter &&
+        item.status !== statusFilter
+      )
+        return false;
+
+
+      if (
+        fromDate &&
+        item.due &&
+        item.due < fromDate
+      )
+        return false;
+
+
+      if (
+        toDate &&
+        item.due &&
+        item.due > toDate
+      )
+        return false;
+
+
+      return true;
+
+    });
+
+
+  document.getElementById("filterCount")
+    .textContent =
+      filtered.length +
+      " of " +
+      tasks.length +
+      " tasks shown";
+
+
+  filtered.sort((a,b) => {
 
     if (!a.due) return 1;
-
     if (!b.due) return -1;
 
     return a.due.localeCompare(b.due);
@@ -955,27 +1174,30 @@ function render() {
   });
 
 
-  /* GROUP BY DEPARTMENT */
+  if (filtered.length === 0) {
+
+    tracker.innerHTML =
+      `<div class="empty">
+        No tasks match the selected filters.
+      </div>`;
+
+    return;
+
+  }
+
 
   const departments = {};
 
 
-  tasks.forEach(item => {
+  filtered.forEach(item => {
 
     const department =
-      item.department ||
-      "General";
+      item.department || "General";
 
-
-    if (!departments[department]) {
-
+    if (!departments[department])
       departments[department] = [];
 
-    }
-
-
-    departments[department]
-      .push(item);
+    departments[department].push(item);
 
   });
 
@@ -984,18 +1206,16 @@ function render() {
 
 
   Object.keys(departments)
-  .forEach((department, index) => {
+  .forEach((department,index) => {
 
     const sectionTasks =
       departments[department];
-
 
     const completed =
       sectionTasks.filter(
         task =>
         task.status === "Completed"
       ).length;
-
 
     const percentage =
       Math.round(
@@ -1004,31 +1224,26 @@ function render() {
         100
       );
 
-
-    const contentID =
+    const id =
       "section-" + index;
 
 
     const section =
       document.createElement("div");
 
-
-    section.className =
-      "section";
+    section.className = "section";
 
 
     section.innerHTML = `
 
       <div
         class="section-header"
-        onclick="toggleSection('${contentID}')"
+        onclick="toggleSection('${id}')"
       >
 
         <div class="section-title-area">
 
-          <span class="arrow">
-            ▾
-          </span>
+          <span class="arrow">▾</span>
 
           <span class="section-title">
             ${escapeHTML(department)}
@@ -1036,18 +1251,13 @@ function render() {
 
           <span class="task-count">
             ${sectionTasks.length}
-            ${sectionTasks.length === 1
-              ? "task"
-              : "tasks"}
+            tasks
           </span>
 
         </div>
 
-
         <div class="section-progress">
-
           ${percentage}%
-
         </div>
 
       </div>
@@ -1055,166 +1265,123 @@ function render() {
 
       <div
         class="section-content"
-        id="${contentID}"
+        id="${id}"
       >
 
-        <table>
+      <table>
 
-          <thead>
+        <thead>
+          <tr>
+
+            <th style="width:38%">TASK</th>
+            <th style="width:22%">PIC</th>
+            <th style="width:22%">DATES</th>
+            <th style="width:15%">STATUS</th>
+            <th></th>
+
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+        ${sectionTasks.map(item => {
+
+          const deadline =
+            getDeadline(
+              item.due,
+              item.status
+            );
+
+          return `
 
             <tr>
 
-              <th style="width:38%">
-                TASK
-              </th>
+              <td>
 
-              <th style="width:22%">
-                PIC
-              </th>
+                <div class="task-name">
+                  ${escapeHTML(item.task)}
+                </div>
 
-              <th style="width:22%">
-                DATES
-              </th>
+                <div class="task-label">
+                  Deadline
+                </div>
 
-              <th style="width:15%">
-                STATUS
-              </th>
+              </td>
 
-              <th style="width:3%">
-              </th>
+
+              <td>
+                ${escapeHTML(item.pic || "—")}
+              </td>
+
+
+              <td>
+
+                <span class="date-main">
+                  ${formatDate(item.due)}
+                </span>
+
+                ${
+                  deadline.text
+                  ?
+                  `<span class="
+                    deadline-badge
+                    ${deadline.className}
+                  ">
+                    ${deadline.text}
+                  </span>`
+                  :
+                  ""
+                }
+
+              </td>
+
+
+              <td>
+
+                <span class="
+                  status
+                  ${statusClass(item.status)}
+                ">
+                  ${escapeHTML(item.status)}
+                </span>
+
+              </td>
+
+
+              <td>
+
+                <button
+                  class="edit-btn"
+                  onclick="
+                    editTask('${item.id}')
+                  "
+                >
+                  ✎
+                </button>
+
+              </td>
 
             </tr>
 
-          </thead>
+          `;
 
+        }).join("")}
 
-          <tbody>
+        </tbody>
 
-          ${sectionTasks.map(item => {
-
-            const deadline =
-              getDeadline(
-                item.due,
-                item.status
-              );
-
-
-            return `
-
-              <tr>
-
-                <td>
-
-                  <div class="task-name">
-
-                    ${escapeHTML(
-                      item.task
-                    )}
-
-                  </div>
-
-                  <div class="task-label">
-
-                    Deadline
-
-                  </div>
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    item.pic || "—"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  <span class="date-main">
-
-                    ${formatDate(
-                      item.due
-                    )}
-
-                  </span>
-
-
-                  ${
-                    deadline.text
-                    ?
-                    `<span
-                      class="deadline-badge
-                      ${deadline.className}"
-                    >
-                      ${deadline.text}
-                    </span>`
-                    :
-                    ""
-                  }
-
-                </td>
-
-
-                <td>
-
-                  <span
-                    class="
-                      status
-                      ${statusClass(
-                        item.status
-                      )}
-                    "
-                  >
-
-                    ${escapeHTML(
-                      item.status
-                    )}
-
-                  </span>
-
-                </td>
-
-
-                <td>
-
-                  <button
-                    class="edit-btn"
-                    onclick="
-                      editTask(
-                        '${item.id}'
-                      )
-                    "
-                  >
-                    ✎
-                  </button>
-
-                </td>
-
-              </tr>
-
-            `;
-
-          }).join("")}
-
-          </tbody>
-
-        </table>
+      </table>
 
       </div>
 
     `;
 
 
-    tracker.appendChild(
-      section
-    );
+    tracker.appendChild(section);
 
   });
 
-}
+};
 
 </script>
 
