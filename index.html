@@ -239,8 +239,6 @@ tr:last-child td {
   padding: 0;
 }
 
-/* NOTE */
-
 .task-note {
   color: #929292;
   font-size: 11px;
@@ -321,7 +319,7 @@ tr:last-child td {
   font-size: 16px;
 }
 
-/* PIC CHECKBOX */
+/* PIC */
 
 .pic-checkbox-box {
   border: 1px solid #ddd;
@@ -399,6 +397,7 @@ tr:last-child td {
   padding: 10px;
   text-align: center;
   font-size: 11px;
+  font-weight: 600;
 }
 
 .calendar-cell {
@@ -568,8 +567,17 @@ label {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .header {
+    align-items: flex-start;
+  }
+
   .header h1 {
     font-size: 22px;
+  }
+
+  .add-btn {
+    padding: 10px 14px;
+    font-size: 12px;
   }
 
   .filters select,
@@ -587,6 +595,91 @@ label {
     grid-template-columns: 1fr;
     gap: 0;
   }
+
+  /* MOBILE CALENDAR */
+
+  .calendar-wrapper {
+    overflow-x: visible;
+    width: 100%;
+  }
+
+  .calendar-grid {
+    min-width: 0;
+    width: 100%;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .calendar-days div {
+    padding: 8px 1px;
+    font-size: 9px;
+  }
+
+  .calendar-cell {
+    min-height: 82px;
+    padding: 4px 2px;
+    overflow: hidden;
+  }
+
+  .calendar-date {
+    font-size: 10px;
+    margin-bottom: 3px;
+    padding-left: 2px;
+  }
+
+  .calendar-today .calendar-date {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  .calendar-task {
+    font-size: 8px;
+    padding: 4px 3px;
+    border-radius: 4px;
+    line-height: 1.2;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  .calendar-task strong {
+    display: block;
+    overflow: hidden;
+    max-height: 29px;
+  }
+
+  .calendar-task-pic {
+    display: none;
+  }
+
+  .calendar-toolbar {
+    display: block;
+  }
+
+  .calendar-controls {
+    display: grid;
+    grid-template-columns: 42px 1fr 42px 70px;
+    gap: 7px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .calendar-controls button {
+    padding: 8px 4px;
+  }
+
+  #calendarMonth {
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+  }
+
+  #calendarDepartmentFilter {
+    width: 100%;
+  }
+
 }
 </style>
 </head>
@@ -596,6 +689,7 @@ label {
 <div class="container">
 
   <div class="header">
+
     <div>
       <h1>Online Journalism Asm1</h1>
       <div class="subtitle">Assignment Task Tracker</div>
@@ -604,6 +698,7 @@ label {
     <button class="add-btn" onclick="openAddModal()">
       + Add Task
     </button>
+
   </div>
 
 
@@ -684,6 +779,7 @@ label {
 
     </div>
 
+
     <div id="tracker">
       Loading...
     </div>
@@ -716,6 +812,7 @@ label {
 
     </div>
 
+
     <div class="calendar-wrapper">
 
       <div class="calendar-grid calendar-days">
@@ -746,22 +843,28 @@ label {
     <h2 id="modalTitle">Add Task</h2>
 
     <label>Department / Section</label>
+
     <input
       id="department"
       placeholder="e.g. Due Date"
     >
 
+
     <label>Task</label>
+
     <input
       id="task"
       placeholder="e.g. Group Consultation - 12pm"
     >
 
+
     <label>Note</label>
+
     <textarea
       id="note"
       placeholder="Add details or reminders..."
     ></textarea>
+
 
     <label>PIC</label>
 
@@ -774,20 +877,27 @@ label {
     <div class="date-row">
 
       <div>
+
         <label>Start Date</label>
+
         <input
           type="date"
           id="startDate"
           onchange="syncEndDate()"
         >
+
       </div>
 
+
       <div>
+
         <label>End Date</label>
+
         <input
           type="date"
           id="endDate"
         >
+
       </div>
 
     </div>
@@ -813,12 +923,14 @@ label {
         Delete
       </button>
 
+
       <button
         class="cancel-btn"
         onclick="closeModal()"
       >
         Cancel
       </button>
+
 
       <button
         class="save-btn"
@@ -1194,7 +1306,8 @@ function updateStats() {
   tasks.forEach(item => {
 
     if (
-      item.status === "Completed"
+      item.status ===
+      "Completed"
     ) {
 
       completed++;
@@ -1245,15 +1358,18 @@ function updateStats() {
   .textContent =
     tasks.length;
 
+
   document
   .getElementById("completedTasks")
   .textContent =
     completed;
 
+
   document
   .getElementById("dueSoonTasks")
   .textContent =
     dueSoon;
+
 
   document
   .getElementById("overdueTasks")
